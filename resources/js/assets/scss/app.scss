@@ -1,0 +1,51 @@
+:root {
+    --primary: #065f46;
+    
+  }
+
+.overlay {
+    @apply relative overflow-hidden;
+}
+.overlay::before {
+    content: '';
+    @apply absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-primary bg-opacity-80;
+}
+
+.vs__dropdown-toggle {
+    border: 1px solid var(--primary) !important;
+    padding: 6px 8px !important;
+    padding-right: 0px !important;
+    border-radius: 8px !important;
+    background-color: #065f46 !important;
+}
+.vs__dropdown-menu {
+    top: 50px !important;
+    border: 0 !important;
+}
+.vs__search {
+    margin: 0 !important;
+    color: #fff !important;
+}
+.vs__selected {
+    margin: 0 !important;
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+}
+.vs__open-indicator {
+    display: none !important;
+}
+.vs__actions {
+    padding: 0 !important;
+}
+.vs__dropdown-option--highlight {
+    background-color: #065f46 !important;
+}
+.vs__selected {
+    color: #fff !important;
+}
+.vs__clear {
+    svg {
+        fill: #fff !important;
+    }
+}
