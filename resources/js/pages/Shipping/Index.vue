@@ -7,8 +7,8 @@ import AppLayout from "@/components/Layouts/AppLayout.vue";
             <div class="bg-white p-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <Icon name="tabler:category" class="text-3xl text-primary" />
-                        <h3 class="text-primary text-3xl font-semibold">Category</h3>
+                        <Icon name="streamline:shipping-transfer-cart-package-box-fulfillment-cart-warehouse-shipping-delivery" class="text-3xl text-primary" />
+                        <h3 class="text-primary text-3xl font-semibold">Shipping</h3>
                     </div>
                     <div>
                         <Button class="flex items-center gap-2">
@@ -35,7 +35,7 @@ import AppLayout from "@/components/Layouts/AppLayout.vue";
                         class="w-20"
                         placeholder="25"
                         :options="[5, 10, 15, 20, 25]"
-                        ></Select>
+                    ></Select>
                     </div>
                 </div>
             </div>
@@ -46,19 +46,22 @@ import AppLayout from "@/components/Layouts/AppLayout.vue";
                     <thead class="text-xs text-white  uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                           Icon
+                           Id
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Banner
+                            Area Name
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Name
+                            Area Code
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Status
+                            Delivery Charge
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Created By
+                            Charge Condition
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Condition Price
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Action
@@ -68,25 +71,24 @@ import AppLayout from "@/components/Layouts/AppLayout.vue";
                     <tbody>
                     <tr v-for="order in 8" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th class="flex items-center px-6 py-4">
-                            <Icon name="carbon:category" class="text-3xl text-gray-400"></Icon>
+                           <p># 1</p>
                         </th>
 
                         <td class="px-6 py-4">
-                            <img src="https://img.freepik.com/free-photo/woman-holding-various-shopping-bags-copy-space_23-2148674122.jpg?t=st=1719121783~exp=1719125383~hmac=a5500068561c90b563d99ed09fc0f960ed275f058c44b51067057a7bf59bdf66&w=826" class="w-16 md:w-32 max-w-full max-h-full" alt="">
+                            <p>Dhaka</p>
                         </td>
-                        <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
-                            <div>
-                                <div class="text-base font-semibold">Neil Sims</div>
-                            </div>
+                        <th class="px-6 py-4">
+                           <p>1213</p>
                         </th>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center">
-                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
-                            </div>
-                        </td>
-                        <td class="px-6 py-4">
-                            Bonnie Green
-                        </td>
+                        <th class="px-6 py-4">
+                           <p>50</p>
+                        </th>
+                        <th class="px-6 py-4">
+                           <p>......</p>
+                        </th>
+                        <th class="px-6 py-4">
+                           <p>.....</p>
+                        </th>
 
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-2">

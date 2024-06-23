@@ -7,14 +7,8 @@ import AppLayout from "@/components/Layouts/AppLayout.vue";
             <div class="bg-white p-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <Icon name="tabler:category" class="text-3xl text-primary" />
-                        <h3 class="text-primary text-3xl font-semibold">Category</h3>
-                    </div>
-                    <div>
-                        <Button class="flex items-center gap-2">
-                            <Icon name="material-symbols:add-box-outline" />
-                            Add Record
-                        </Button>
+                        <Icon name="material-symbols:shopping-cart-outline-sharp" class="text-3xl text-primary" />
+                        <h3 class="text-primary text-3xl font-semibold">Order Details</h3>
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
@@ -35,7 +29,7 @@ import AppLayout from "@/components/Layouts/AppLayout.vue";
                         class="w-20"
                         placeholder="25"
                         :options="[5, 10, 15, 20, 25]"
-                        ></Select>
+                    ></Select>
                     </div>
                 </div>
             </div>
@@ -45,50 +39,77 @@ import AppLayout from "@/components/Layouts/AppLayout.vue";
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-white  uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">
-                           Icon
+                        <th scope="col" class="p-3">
+                            Id
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            Banner
+                        <th scope="col" class="p-3">
+                            Customer
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            Name
+                        <th scope="col" class="p-3">
+                            Total
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            Status
+                        <th scope="col" class="p-3">
+                            Order Status
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            Created By
+                        <th scope="col" class="p-3">
+                            Type
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <th scope="col" class="p-3">
+                            Payment Status
+                        </th>
+                        <th scope="col" class="p-3">
+                            Payment Method
+                        </th>
+                        <th scope="col" class="p-3">
+                            Order date
+                        </th>
+                        <th scope="col" class="p-3">
                             Action
                         </th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="order in 8" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th class="flex items-center px-6 py-4">
-                            <Icon name="carbon:category" class="text-3xl text-gray-400"></Icon>
+                        <th class="flex items-center p-3">
+                            <span># 1</span>
                         </th>
-
-                        <td class="px-6 py-4">
-                            <img src="https://img.freepik.com/free-photo/woman-holding-various-shopping-bags-copy-space_23-2148674122.jpg?t=st=1719121783~exp=1719125383~hmac=a5500068561c90b563d99ed09fc0f960ed275f058c44b51067057a7bf59bdf66&w=826" class="w-16 md:w-32 max-w-full max-h-full" alt="">
-                        </td>
-                        <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                        <th scope="row" class="p-3 text-gray-900 whitespace-nowrap dark:text-white">
                             <div>
                                 <div class="text-base font-semibold">Neil Sims</div>
                             </div>
                         </th>
-                        <td class="px-6 py-4">
+                        <td class="p-3">
                             <div class="flex items-center">
-                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
+                               <p>$ 650</p>
                             </div>
                         </td>
-                        <td class="px-6 py-4">
-                            Bonnie Green
+                        <td class="p-3">
+                            <div class="flex justify-center">
+                                <p class="rounded border border-yellow-600 bg-yellow-100 text-yellow-600 text-xs font-medium px-3 py-1 text-center">Pending</p>
+                            </div>
+                        </td>
+                        <td class="p-3">
+                            <div class="flex items-center">
+                                <p>Customer</p>
+                            </div>
+                        </td>
+                        <td class="p-3">
+                            <div class="flex justify-center">
+                                <p class="rounded border border-green-700 bg-green-200 text-green-700 text-xs font-semibold px-3 py-1 text-center">Paid</p>
+                            </div>
+                        </td>
+                        <td class="p-3">
+                            <div class="flex items-center">
+                                <p>Bkash</p>
+                            </div>
+                        </td>
+                        <td class="p-3">
+                            <div class="flex items-center">
+                                <p>12/06/2024</p>
+                            </div>
                         </td>
 
-                        <td class="px-6 py-4">
+                        <td class="p-3">
                             <div class="flex items-center gap-2">
                                 <button class="w-8 h-8 rounded-md flex items-center justify-center bg-green-400/10 border border-green-900">
                                     <Icon  name="material-symbols:visibility-outline-rounded" class="text-xl text-green-900" />

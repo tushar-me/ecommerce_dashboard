@@ -34,10 +34,40 @@ const router = createRouter({
       name: 'Category',
       component: () => import('@/pages/Category/Index.vue')
     },
+      {
+      path: '/brand',
+      name: 'Brand',
+      component: () => import('@/pages/Brand/Index.vue')
+    },
+      {
+      path: '/stock',
+      name: 'Stock',
+      component: () => import('@/pages/Stock/Index.vue')
+    },
     {
       path: '/customers',
       name: 'Customers',
       component: () => import('@/pages/Customers/Index.vue')
+    },
+      {
+      path: '/manager',
+      name: 'Manager',
+      component: () => import('@/pages/Manager/Index.vue')
+    },
+      {
+      path: '/order',
+      name: 'Order',
+      component: () => import('@/pages/Order/Index.vue')
+    },
+      {
+      path: '/shipping',
+      name: 'Shipping',
+      component: () => import('@/pages/Shipping/Index.vue')
+    },
+      {
+      path: '/setting',
+      name: 'Setting',
+      component: () => import('@/pages/Setting/Index.vue')
     },
   ]
 })
