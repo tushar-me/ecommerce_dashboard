@@ -11,6 +11,10 @@ class Category extends Model
 {
     use HasFactory;
 
+    public function products() : HasMany 
+    {
+        return $this->hasMany(Product::class);
+    }
     public function children(): HasMany
     {
         return $this->hasMany(Category::class, 'parent_id')->select(['id','parent_id','name','slug', 'icon', 'banner', 'description']);

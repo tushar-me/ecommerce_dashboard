@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('icon')->nullable();
             $table->string('banner')->nullable();
             $table->longText('description')->nullable();
+            $table->enum('status', ['active','inactive'])->default('active');
             $table->timestamps();
         });
     }

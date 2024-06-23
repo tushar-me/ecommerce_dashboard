@@ -10,7 +10,7 @@ const router = createRouter({
       component: () => import('@/pages/Index.vue')
     },
     {
-      path: '/verify',
+      path: '/login',
       name: 'Login',
       component: () => import('@/pages/Auth/Login.vue')
     },

@@ -32,19 +32,23 @@ return new class extends Migration
 
             $table->string('title');
             $table->string('slug')->unique();
+            $table->string('cover_image');
+            $table->string('hover_image')->nullable();
+            $table->string('preview_video')->nullable();
+            $table->string('video_url')->nullable();
             $table->mediumText('short_description')->nullable();
             $table->longText('description')->nullable();
+            $table->longText('detail')->nullable();
+            $table->longText('specification')->nullable();
             $table->string('sku')->nullable();
             $table->integer('stock')->nullable();
-            $table->string('thumbnail')->nullable();
             $table->string('bar_code')->nullable();
-            $table->integer('price');
+            $table->integer('price')->default(0);
             $table->integer('discount')->nullable();
             $table->enum('status', ['active','inactive'])->default('active');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */
