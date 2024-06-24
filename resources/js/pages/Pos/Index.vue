@@ -25,12 +25,12 @@
 
                             <div class="flex items-center gap-3">
                                 <Select
-                                    class="w-52"
+                                    class="w-28"
                                     placeholder="select category"
                                     :options="['Canada', 'United States']"
                                 ></Select>
                                 <Select
-                                    class="w-52"
+                                    class="w-28"
                                     placeholder="select Brand"
                                     :options="['Canada', 'United States']"
                                 ></Select>
