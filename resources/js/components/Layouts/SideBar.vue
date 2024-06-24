@@ -2,7 +2,7 @@
 const props = defineProps({
         text: {
             type: Boolean,
-            default: false
+            default: true
         }
     });
 </script>
@@ -13,8 +13,8 @@ const props = defineProps({
             <div>
                 <img src="" alt="">
             </div>
-            <ul class="flex flex-col gap-5 items-center">
-                
+            <ul class="flex flex-col gap-5">
+
                 <li>
                     <Tooltip placement="right">
                         <template #trigger>
@@ -29,7 +29,7 @@ const props = defineProps({
                             dashboard
                         </template>
                     </Tooltip>
-                    
+
                 </li>
                 <li>
                     <RouterLink to="/pos" class="flex items-center gap-2">
@@ -56,7 +56,7 @@ const props = defineProps({
                     </RouterLink>
                 </li>
                 <li>
-                    <RouterLink  to="/" class="flex items-center gap-2">
+                    <RouterLink  to="/brand" class="flex items-center gap-2">
                         <div class="w-10 h-10 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
                             <Icon name="tabler:brand-bandcamp" size="20" class="text-white" />
                         </div>
@@ -64,14 +64,14 @@ const props = defineProps({
                     </RouterLink>
                 </li>
                 <li>
-                    <RouterLink  to="/" class="flex items-center gap-2">
+                    <RouterLink  to="/stock" class="flex items-center gap-2">
                         <div class="w-10 h-10 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
                             <Icon name="ant-design:stock-outlined" size="20" class="text-white" />
                         </div>
                         <p  v-if="text" class="text-white">Stock</p>
                     </RouterLink>
                 </li>
-                
+
                 <li>
                     <RouterLink  to="/customers" class="flex items-center gap-2">
                         <div class="w-10 h-10 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
@@ -81,7 +81,15 @@ const props = defineProps({
                     </RouterLink>
                 </li>
                 <li>
-                    <RouterLink  to="/" class="flex items-center gap-2">
+                    <RouterLink  to="/manager" class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
+                            <Icon name="hugeicons:manager" size="20" class="text-white" />
+                        </div>
+                        <p  v-if="text" class="text-white">Manager</p>
+                    </RouterLink>
+                </li>
+                <li>
+                    <RouterLink  to="/order" class="flex items-center gap-2">
                         <div class="w-10 h-10 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
                             <Icon name="material-symbols:orders-outline" size="20" class="text-white" />
                         </div>
@@ -89,7 +97,7 @@ const props = defineProps({
                     </RouterLink>
                 </li>
                 <li>
-                    <RouterLink to="/" class="flex items-center gap-2">
+                    <RouterLink to="/shipping" class="flex items-center gap-2">
                         <div class="w-10 h-10 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
                             <Icon name="ph:map-pin-area" size="20" class="text-white" />
                         </div>
@@ -97,7 +105,7 @@ const props = defineProps({
                     </RouterLink>
                 </li>
                 <li>
-                    <RouterLink  to="/" class="flex items-center gap-2">
+                    <RouterLink  to="/setting" class="flex items-center gap-2">
                         <div class="w-10 h-10 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
                             <Icon name="material-symbols:settings-outline-rounded" size="20" class="text-white" />
                         </div>

@@ -12,9 +12,9 @@ class Product extends Model
 {
     use HasFactory;
 
-    public function user() :BelongsTo 
+    public function creator() :BelongsTo 
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Admin::class, 'created_by');
     }
 
     public function updatedBy() :BelongsTo 
@@ -31,13 +31,8 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    public function productImages() :HasMany
+    public function images() :HasMany
     {
         return $this->hasMany(ProductImage::class);
-    }
-
-    public function productExtraDetails() :HasMany
-    {
-        return $this->hasMany(ProductExtraDetail::class, 'extra_detail_id');
     }
 }

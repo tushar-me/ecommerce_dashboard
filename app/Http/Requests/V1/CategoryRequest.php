@@ -11,7 +11,7 @@ class CategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,13 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:categories,slug,',
+            'parent_id' => 'nullable|integer|exists:categories,id',
+            'icon' => 'nullable||mimes:png,jpg,jpeg,webp|between:300, 900',
+            'banner' => 'nullable|mimes:png,jpg,jpeg,webp|between:300, 900',
+            'description' => 'nullable|string',
+            'status' => 'required|in:active,inactive',
         ];
     }
 }

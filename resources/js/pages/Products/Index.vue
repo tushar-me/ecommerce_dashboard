@@ -6,7 +6,10 @@ import DateRangPicker from '@/components/DateRangPicker.vue';
         <section class="px-4">
             <div class="bg-white p-4">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-black text-3xl font-semibold">Products</h3>
+                    <div class="flex items-center gap-3">
+                        <Icon name="carbon:ibm-data-product-exchange" class="text-3xl text-primary" />
+                        <h3 class="text-primary text-3xl font-semibold">Products</h3>
+                    </div>
                     <div>
                         <Button class="flex items-center gap-2">
                             <Icon name="material-symbols:add-box-outline" />
@@ -26,24 +29,24 @@ import DateRangPicker from '@/components/DateRangPicker.vue';
                             <input type="text" id="table-search-users" class="block p-2 ps-10 text-sm text-gray-900 border border-primary rounded-lg w-96 bg-gray-50 focus:ring-primary focus:border-primary" placeholder="Search for Products">
                         </div>
                     </div>
-                    
+
                     <div class="flex items-center gap-3">
-                        <Select 
+                        <Select
                         class="w-52"
                         placeholder="select category"
                         :options="['Canada', 'United States']"
                         ></Select>
-                        <Select 
+                        <Select
                         class="w-52"
                         placeholder="select Brand"
                         :options="['Canada', 'United States']"
                         ></Select>
                     </div>
-                    
+
                 </div>
                 <div class="flex items-center gap-3">
                     <div>
-                        <Select 
+                        <Select
                         class="w-36"
                         placeholder="price"
                         :options="['1 - 100$', '100 - 500$', '500$ - 1000$', '1000$+']"

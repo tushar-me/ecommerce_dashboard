@@ -43,7 +43,6 @@ class ProductRequest extends FormRequest
             'discount' => 'nullable|integer|min:0',
             'status' => 'required|in:active,inactive',
             'images' => 'nullable|string',
-            'extra_details' => 'nullable|string',
         ];
     }
 }

@@ -1,5 +1,5 @@
 <script setup>
-
+    import AppLayout from "@/components/Layouts/AppLayout.vue";
 </script>
 <template>
     <AppLayout>
@@ -8,7 +8,7 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
                         <Icon name="gis:globe-users" class="text-3xl text-primary" />
-                        <h3 class="text-black text-3xl font-semibold">Customers</h3>
+                        <h3 class="text-primary text-3xl font-semibold">Customers</h3>
                     </div>
                     <div>
                         <Button class="flex items-center gap-2">
@@ -29,9 +29,9 @@
                             <input type="text" id="table-search-users" class="block p-2 ps-10 text-sm text-gray-900 border border-primary rounded-lg w-96 bg-gray-50 focus:ring-primary focus:border-primary" placeholder="Search for Customers">
                         </div>
                     </div>
-                    
+
                     <div class="flex items-center gap-3">
-                        Rows: <Select 
+                        Rows: <Select
                         class="w-20"
                         placeholder="25"
                         :options="[5, 10, 15, 20, 25]"

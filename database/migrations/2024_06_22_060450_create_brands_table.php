@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('name')->index();
+            $table->string('slug')->unique()->index();
             $table->string('logo')->nullable();
             $table->string('banner')->nullable();
             $table->longText('description')->nullable();
-            $table->enum('status', ['active','inactive'])->default('active');
+            $table->enum('status', ['active','inactive'])->default('active')->index();
             $table->timestamps();
         });
     }

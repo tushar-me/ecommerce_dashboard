@@ -6,7 +6,8 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\UnauthorizedException;
+use Illuminate\Auth\Access\AuthorizationException;
+
 
 
 class AdminMiddleware
@@ -18,9 +19,9 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && $request->user()->role("admin")){
+        if (auth()->user()->tokenCan('role:admin')) {
             return $next($request);
         }
-        throw new UnauthorizedException(401,  __("unauthorized_access"));
+        throw new AuthorizationException(__('unauthorized_access'), 401);
     }
 }

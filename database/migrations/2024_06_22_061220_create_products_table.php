@@ -14,11 +14,6 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('user_id')
-            ->constrained('users')
-            ->cascadeOnDelete()
-            ->cascadeOnUpdate();
-
             $table->foreignId('category_id')
             ->constrained('categories')
             ->cascadeOnDelete()
@@ -27,11 +22,13 @@ return new class extends Migration
             $table->unsignedBigInteger('brand_id')
             ->nullable();
 
+            $table->unsignedBigInteger('created_by')
+            ->nullable();
             $table->unsignedBigInteger('updated_by')
             ->nullable();
 
-            $table->string('title');
-            $table->string('slug')->unique();
+            $table->string('title')->index();
+            $table->string('slug')->unique()->index();
             $table->string('cover_image');
             $table->string('hover_image')->nullable();
             $table->string('preview_video')->nullable();
@@ -40,12 +37,12 @@ return new class extends Migration
             $table->longText('description')->nullable();
             $table->longText('detail')->nullable();
             $table->longText('specification')->nullable();
-            $table->string('sku')->nullable();
+            $table->string('sku')->nullable()->index();
             $table->integer('stock')->nullable();
-            $table->string('bar_code')->nullable();
-            $table->integer('price')->default(0);
+            $table->string('bar_code')->nullable()->index();
+            $table->integer('price')->default(0)->index();
             $table->integer('discount')->nullable();
-            $table->enum('status', ['active','inactive'])->default('active');
+            $table->enum('status', ['active','inactive'])->default('active')->index();
             $table->timestamps();
         });
     }

@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('name')->index();
+            $table->string('slug')->unique()->index();
             $table->integer('parent_id')->default(0);
             $table->string('icon')->nullable();
             $table->string('banner')->nullable();
             $table->longText('description')->nullable();
-            $table->enum('status', ['active','inactive'])->default('active');
+            $table->enum('status', ['active','inactive'])->default('active')->index();
             $table->timestamps();
         });
     }

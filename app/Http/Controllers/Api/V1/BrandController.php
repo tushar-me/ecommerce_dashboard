@@ -3,7 +3,15 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\BrandRequest;
+use App\Models\Brand;
 use Illuminate\Http\Request;
+use App\Http\Resources\V1\Brand\BrandListResource;
+use App\Http\Resources\V1\Brand\BrandShowResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\UnauthorizedException;
+use Symfony\Component\HttpFoundation\Response;
 
 class BrandController extends Controller
 {
@@ -12,15 +20,34 @@ class BrandController extends Controller
      */
     public function index()
     {
-        //
+        $brands = Brand::query()
+        ->whereLike(['title'], request()->input('search'))
+        ->sortBy()
+        ->pagination(); 
+        
+        return BrandListResource::collection($brands);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BrandRequest $request)
     {
-        //
+        $data = $request->validated();
+        // save icon image
+        if($request->hasFile('logo')){
+            $path = '/storage/' . $request->file('logo')->store('uploads', 'public');
+            $data['logo'] = $path;
+        }
+
+        // save banner image
+        if($request->hasFile('banner')){
+            $path = '/storage/' . $request->file('banner')->store('uploads', 'public');
+            $data['banner'] = $path;
+        }
+        $brand = Brand::create($data);
+
+        return BrandShowResource::make($brand);
     }
 
     /**
@@ -28,22 +55,56 @@ class BrandController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $brand = Brand::findOrFail($id);
+        return BrandShowResource::collection($brand);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(BrandRequest $request, string $id): BrandShowResource
     {
-        //
+        $brand = Brand::findOrFail($id);
+        $data = $request->validated();
+        // save logo image
+        if($request->hasFile('logo')){
+            if ($brand->logo) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $brand->logo));
+            }
+            $path = '/storage/' . $request->file('log')->store('uploads', 'public');
+            $data['logo'] = $path;
+        }
+
+        // save banner image
+        if($request->hasFile('banner')){
+            if ($brand->banner) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $brand->banner));
+            }
+            $path = '/storage/' . $request->file('banner')->store('uploads', 'public');
+            $data['banner'] = $path;
+        }
+        $brand = $brand->update($data);
+
+        return BrandShowResource::make($brand);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(string $id): int
     {
-        //
+        if(Auth::check() && Auth::user()->role === 'admin')
+        {
+            $brand = Brand::findOrFail($id);
+            if($brand)
+            {
+                $image = $brand->image;
+                if($image){
+                    $imagePath = str_replace('/storage','public',$image);
+                    Storage::delete($imagePath);
+                }
+                $brand->delete();
+
+                return Response::HTTP_OK;
+            }
+        }
+        throw new UnauthorizedException(__("unauthenticated_access"));
     }
 }
