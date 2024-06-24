@@ -105,6 +105,22 @@ const props = defineProps({
                     </RouterLink>
                 </li>
                 <li>
+                    <RouterLink to="/slider" class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
+                            <Icon name="solar:slider-vertical-minimalistic-bold" size="20" class="text-white" />
+                        </div>
+                        <p  v-if="text" class="text-white">Slider</p>
+                    </RouterLink>
+                </li>
+                <li>
+                    <RouterLink to="/advertise" class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
+                            <Icon name="hugeicons:advertisement" size="20" class="text-white" />
+                        </div>
+                        <p  v-if="text" class="text-white">Advertise</p>
+                    </RouterLink>
+                </li>
+                <li>
                     <RouterLink  to="/setting" class="flex items-center gap-2">
                         <div class="w-10 h-10 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
                             <Icon name="material-symbols:settings-outline-rounded" size="20" class="text-white" />
