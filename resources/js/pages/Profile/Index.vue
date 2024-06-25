@@ -27,7 +27,7 @@ import Button from "@/components/Button.vue";
                     </div>
                     <div class="ml-3 bg-white shadow-md rounded-xl mt-10">
                         <h2 class="text-lg font-semibold p-4">About</h2>
-                        <p class="text-sm font-medium pb-4 px-4 text-gray-500">am a person who is positive about every aspect of life. There are many things I like to do, to see, and to experience. I like to read, I like to write; I like to think, I like to dream; I like to talk, I like to listen. I like to see the sunrise in the morning, I like to see the moonlight at night; I like to feel the music flowing on my face, I like to smell the wind coming from the ocean. I like to look at the clouds in the sky with a blank mind, I like to do thought experiment when I cannot sleep in the middle of the night. I like flowers in spring, rain in summer, leaves in autumn, and snow in winter</p>
+                        <p class="text-sm font-normal pb-4 px-4 text-gray-500">am a person who is positive about every aspect of life. There are many things I like to do, to see, and to experience. I like to read, I like to write; I like to think, I like to dream; I like to talk, I like to listen. I like to see the sunrise in the morning, I like to see the moonlight at night; I like to feel the music flowing on my face, I like to smell the wind coming from the ocean. I like to look at the clouds in the sky with a blank mind, I like to do thought experiment when I cannot sleep in the middle of the night. I like flowers in spring, rain in summer, leaves in autumn, and snow in winter</p>
                     </div>
 
                 </div>
