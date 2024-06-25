@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-10 shadow-xl border">
+    <div class="mb-10 shadow border">
       <h3 class="p-3 text-2xl text-black">Recent Order</h3>
       <div class="relative overflow-x-auto">
         <table class="w-full text-sm text-left rtl:text-right text-black bg-white">

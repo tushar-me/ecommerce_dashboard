@@ -29,6 +29,11 @@ const router = createRouter({
       name: 'Products',
       component: () => import('@/pages/Products/Index.vue')
     },
+      {
+      path: '/products-detail/:slug',
+      name: 'Detail',
+      component: () => import('@/pages/Products/Detail.vue')
+    },
     {
       path: '/category',
       name: 'Category',
@@ -68,6 +73,21 @@ const router = createRouter({
       path: '/setting',
       name: 'Setting',
       component: () => import('@/pages/Setting/Index.vue')
+    },
+      {
+      path: '/slider',
+      name: 'Slider',
+      component: () => import('@/pages/Slider/Index.vue')
+    },
+      {
+      path: '/advertise',
+      name: 'Advertise',
+      component: () => import('@/pages/Advertise/Index.vue')
+    },
+      {
+      path: '/profile',
+      name: 'Profile',
+      component: () => import('@/pages/Profile/Index.vue')
     },
   ]
 })
