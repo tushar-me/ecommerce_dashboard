@@ -1,5 +1,26 @@
 <script setup>
-import AppLayout from "@/components/Layouts/AppLayout.vue";
+import { onMounted, ref } from 'vue';
+import useAxios from "@/composables/useAxios"
+import { useAuthStore } from '@/stores/useAuthStore.js';
+const authStore = useAuthStore();
+const { loading, error, sendRequest } = useAxios();
+
+const sliders= ref(null);
+
+const getSliders = () => {
+    const res = sendRequest({
+        method: 'get',
+        url: '/slider',
+        headers: {
+            authorization: `Bearer ${authStore.user.token}`
+        }
+    });
+    sliders.value = res.data
+}
+
+onMounted(() => {
+    getSliders();
+})
 </script>
 <template>
     <AppLayout>

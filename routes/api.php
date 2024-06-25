@@ -38,7 +38,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::prefix('v1')->middleware(['auth:sanctum', 'throttle:api'])->group( function () { 
+Route::prefix('v1')->middleware(['auth:sanctum', 'throttle:api', 'type.admin'])->group( function () { 
 
     Route::get('/delete-product-image', [ProductController::class, 'deleteImage']);
     Route::apiResources([

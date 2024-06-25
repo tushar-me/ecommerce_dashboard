@@ -3,10 +3,10 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import AppLayout from '@/components/Layouts/AppLayout.vue';
 import  Icon  from '@/components/Icon.vue';
-import Tooltip from '@/components/Tooltip.vue';
 import Button from '@/components/Button.vue';
 import  VSelect  from "vue-select";
 import "vue-select/dist/vue-select.css";
+import 'vue3-toastify/dist/index.css';
 import 'flowbite';
 
 

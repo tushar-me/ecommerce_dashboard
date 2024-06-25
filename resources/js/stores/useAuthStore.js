@@ -17,7 +17,7 @@ export const useAuthStore = defineStore('auth', () => {
             try {
                 const { data } = await sendRequest({
                     method: 'get',
-                    url: 'api/user',
+                    url: '/user',
                     headers: {
                         "Authorization": `Bearer ${storedUser?.token}`
                     }
@@ -46,14 +46,13 @@ export const useAuthStore = defineStore('auth', () => {
 
             const loginResponse = await sendRequest({
                 method: "POST",
-                url: "/api/admin/login",
+                url: "/admin/login",
                 data: credential
             });
-
-            if (loginResponse.data?.data) {
-                await setLocalStorage(loginResponse.data.data);
-                user.value = loginResponse.data.data;
-                tokenStore.setToken(loginResponse.data.data);
+            if (loginResponse.data) {
+                await setLocalStorage(loginResponse.data);
+                user.value = loginResponse.data;
+                tokenStore.setToken(loginResponse.data);
                 return loginResponse;
             }
         } catch (err) {   

@@ -28,7 +28,7 @@ class LoginController extends Controller
         $token = $customer->createToken('customer', ['role:customer'])->plainTextToken;
 
         return response()->json([
-            'admin' => $customer,
+            'user' => $customer,
             'token' => $token
         ]);
     }

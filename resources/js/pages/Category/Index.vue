@@ -1,5 +1,27 @@
 <script setup>
 import AppLayout from "@/components/Layouts/AppLayout.vue";
+import { onMounted, ref } from 'vue';
+import useAxios from "@/composables/useAxios"
+import { useAuthStore } from '@/stores/useAuthStore.js';
+const authStore = useAuthStore();
+const { loading, error, sendRequest } = useAxios();
+
+const categories= ref(null);
+
+const getCategories = () => {
+    const res = sendRequest({
+        method: 'get',
+        url: '/catgory',
+        headers: {
+            authorization: `Bearer ${authStore.user.token}`
+        }
+    });
+    categories.value = res.data
+}
+
+onMounted(() => {
+    getCategories();
+})
 </script>
 <template>
     <AppLayout>

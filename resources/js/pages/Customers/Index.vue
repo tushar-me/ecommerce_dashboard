@@ -1,5 +1,26 @@
 <script setup>
-    import AppLayout from "@/components/Layouts/AppLayout.vue";
+    import { onMounted, ref } from 'vue';
+    import useAxios from "@/composables/useAxios"
+    import { useAuthStore } from '@/stores/useAuthStore.js';
+    const authStore = useAuthStore();
+    const { loading, error, sendRequest } = useAxios();
+
+    const customers= ref(null);
+
+    const getCustomers = () => {
+        const res = sendRequest({
+            method: 'get',
+            url: '/customer',
+            headers: {
+                authorization: `Bearer ${authStore.user.token}`
+            }
+        });
+        customers.value = res.data
+    }
+
+    onMounted(() => {
+        getCustomers();
+    })
 </script>
 <template>
     <AppLayout>

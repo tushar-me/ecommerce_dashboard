@@ -3,6 +3,8 @@
     import { ref } from 'vue';
     import { useAuthStore } from '@/stores/useAuthStore.js';
     import { useRouter } from 'vue-router'
+    import {toast} from "vue3-toastify";
+
 
     const authStore = useAuthStore();
     const router = useRouter()
@@ -18,7 +20,7 @@
     const handleLogin = async () => {
     try {
         const loginResponse = await authStore.login(loginCredential.value);
-        console.log(loginResponse);
+            console.log(loginResponse);
             if (loginResponse) {
             toast.success('Login successful!', { autoClose: 1000 });
             router.push({ name: "Dashboard" });
