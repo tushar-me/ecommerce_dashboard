@@ -23,8 +23,8 @@ class ProductController extends Controller
     public function index(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $products = Product::query()
-        ->with('user', 'category', 'images', 'brand')
-        ->whereLike(['title'], request()->input('search'))
+        ->with('category', 'images', 'brand')
+        ->whereLike(['title'], $request->input('search'))
         ->sortBy()
         ->pagination();
         return ProductListResource::collection($products);

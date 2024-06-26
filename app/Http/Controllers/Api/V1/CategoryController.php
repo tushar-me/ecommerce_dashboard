@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\CategoryRequest;
 use App\Http\Resources\V1\Category\CategoryListResource;
 use App\Http\Resources\V1\Category\CategoryShowResource;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\UnauthorizedException;
@@ -15,10 +16,10 @@ use Symfony\Component\HttpFoundation\Response;
 class CategoryController extends Controller
 {
 
-    public function index()
+    public function index(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $categories = Category::query()
-        ->whereLike(['title'], request()->input('search'))
+        ->whereLike(['name'], $request->input('search'))
         ->sortBy()
         ->pagination(); 
 

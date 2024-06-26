@@ -35,7 +35,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import '@websitebeaver/vue-magnifier/styles.css'
 import 'vue-inner-image-zoom/lib/vue-inner-image-zoom.css';
 import InnerImageZoom from 'vue-inner-image-zoom';
 

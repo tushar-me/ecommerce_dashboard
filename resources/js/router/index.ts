@@ -29,8 +29,18 @@ const router = createRouter({
       name: 'Products',
       component: () => import('@/pages/Products/Index.vue')
     },
+    {
+      path: '/create-product',
+      name: 'CreateProduct',
+      component: () => import('@/pages/Products/Add.vue')
+    },
+    {
+      path: '/edit-product',
+      name: 'EditProduct',
+      component: () => import('@/pages/Products/Edit.vue')
+    },
       {
-      path: '/products-detail/:slug',
+      path: '/product-detail/:slug',
       name: 'Detail',
       component: () => import('@/pages/Products/Detail.vue')
     },
@@ -39,9 +49,26 @@ const router = createRouter({
       name: 'Category',
       component: () => import('@/pages/Category/Index.vue')
     },
-      {
+    {
+      path: '/create-category',
+      name: 'CreateCategory',
+      component: () => import('@/pages/Category/Add.vue')
+
+    },
+    {
+      path: '/edit-category',
+      name: 'EditCategory',
+      component: () => import('@/pages/Category/Edit.vue')
+
+    },
+    {
       path: '/brand',
       name: 'Brand',
+      component: () => import('@/pages/Brand/Index.vue')
+    },
+    {
+      path: '/create-brand',
+      name: 'CreateBrand',
       component: () => import('@/pages/Brand/Index.vue')
     },
       {
@@ -54,10 +81,30 @@ const router = createRouter({
       name: 'Customers',
       component: () => import('@/pages/Customers/Index.vue')
     },
+    {
+      path: '/create-customer',
+      name: 'CreateCustomer',
+      component: () => import('@/pages/Customers/Add.vue')
+    },
+    {
+      path: '/edit-customer',
+      name: 'EditCstomer',
+      component: () => import('@/pages/Customers/Edit.vue')
+    },
       {
       path: '/manager',
       name: 'Manager',
       component: () => import('@/pages/Manager/Index.vue')
+    },
+    {
+      path: '/create-manager',
+      name: 'CreateManager',
+      component: () => import('@/pages/Manager/Add.vue')
+    },
+    {
+      path: '/edit-manager',
+      name: 'EditManager',
+      component: () => import('@/pages/Manager/Edit.vue')
     },
       {
       path: '/order',
@@ -79,10 +126,30 @@ const router = createRouter({
       name: 'Slider',
       component: () => import('@/pages/Slider/Index.vue')
     },
+    {
+      path: '/create-slider',
+      name: 'CreateSlider',
+      component: () => import('@/pages/Slider/Add.vue')
+    },
+    {
+      path: '/edit-slider',
+      name: 'EditSlider',
+      component: () => import('@/pages/Slider/Edit.vue')
+    },
       {
       path: '/advertise',
       name: 'Advertise',
       component: () => import('@/pages/Advertise/Index.vue')
+    },
+    {
+      path: '/create-advertise',
+      name: 'CreateAdvertise',
+      component: () => import('@/pages/Advertise/Add.vue')
+    },
+    {
+      path: '/edit-advertise',
+      name: 'EditAdvertise',
+      component: () => import('@/pages/Advertise/Edit.vue')
     },
       {
       path: '/profile',

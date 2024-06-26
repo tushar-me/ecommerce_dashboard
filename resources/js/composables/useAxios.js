@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import axios from 'axios';
 
 const axiosInstance  = axios.create({
-    baseURL: 'http://localhost:8000/api', // 'http://localhost:8000', https://admin.isoholdings.com
+    baseURL: 'https://dashboard.ctpse.info/api', // 'http://localhost:8000/api', https://dashboard.ctpse.info/api
     withCredentials: true,
     xsrfHeaderName: "X-XSRF-TOKEN",
 });

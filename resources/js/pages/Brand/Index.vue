@@ -7,15 +7,15 @@ const { loading, error, sendRequest } = useAxios();
 
 const brands= ref(null);
 
-const getBrands = () => {
-    const res = sendRequest({
+const getBrands = async() => {
+    const res = await sendRequest({
         method: 'get',
-        url: '/brand',
+        url: '/v1/brand',
         headers: {
             authorization: `Bearer ${authStore.user.token}`
         }
     });
-    brands.value = res.data
+    brands.value = res?.data?.data
 }
 
 onMounted(() => {
@@ -87,17 +87,17 @@ onMounted(() => {
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="order in 8" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <tr v-for="brand in brands" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th class="flex items-center px-6 py-4">
-                            <img class="h-16 w-16" src="https://img.freepik.com/free-vector/abstract-logo-circular-shape_1043-155.jpg?t=st=1719123492~exp=1719127092~hmac=bc54457543f9dd29461def9d6762d003781f8ff5e980eabb34cc6911956fd041&w=740" alt="">
+                            <img class="h-16 w-16" :src="brand?.logo" alt="">
                         </th>
 
                         <td class="px-6 py-4">
-                            <img src="https://img.freepik.com/free-photo/woman-holding-various-shopping-bags-copy-space_23-2148674122.jpg?t=st=1719121783~exp=1719125383~hmac=a5500068561c90b563d99ed09fc0f960ed275f058c44b51067057a7bf59bdf66&w=826" class="w-16 md:w-32 max-w-full max-h-full" alt="">
+                            <img :src="brand?.banner" class="w-16 md:w-32 h-16 max-w-full max-h-full" alt="">
                         </td>
                         <th scope="row" class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                             <div>
-                                <div class="text-base font-semibold">Neil Sims</div>
+                                <div class="text-base font-semibold">{{ brand?.name }}</div>
                             </div>
                         </th>
                         <td class="px-6 py-4">

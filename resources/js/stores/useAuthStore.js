@@ -52,7 +52,6 @@ export const useAuthStore = defineStore('auth', () => {
             if (loginResponse.data) {
                 await setLocalStorage(loginResponse.data);
                 user.value = loginResponse.data;
-                tokenStore.setToken(loginResponse.data);
                 return loginResponse;
             }
         } catch (err) {   

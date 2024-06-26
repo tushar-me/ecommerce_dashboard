@@ -21,7 +21,7 @@ class BrandController extends Controller
     public function index()
     {
         $brands = Brand::query()
-        ->whereLike(['title'], request()->input('search'))
+        ->whereLike(['name'], request()->input('search'))
         ->sortBy()
         ->pagination(); 
         
