@@ -12,14 +12,14 @@ class Product extends Model
 {
     use HasFactory;
 
-    public function creator() :BelongsTo 
+    public function creator() :BelongsTo
     {
         return $this->belongsTo(Admin::class, 'created_by');
     }
 
-    public function updatedBy() :BelongsTo 
+    public function updatedBy() :BelongsTo
     {
-        return $this->belongsTo(User::class, 'updatedd_by');
+        return $this->belongsTo(User::class, 'updated_by');
     }
     public function category() :BelongsTo
     {
