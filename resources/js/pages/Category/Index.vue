@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import useAxios from "@/composables/useAxios"
 import { useAuthStore } from '@/stores/useAuthStore.js';
+import { toast } from 'vue3-toastify';
 const authStore = useAuthStore();
 const { loading, error, sendRequest } = useAxios();
 
@@ -19,6 +20,19 @@ const getCategories = async() => {
     categories.value = res?.data?.data
 }
 
+
+const deleteCategory = async(category)  => {
+    const response = await sendRequest({
+        method:'delete',
+        url: `/v1/category/${category}`,
+        headers: {
+            authorization: `Bearer ${authStore.user.token}`,
+        }
+    });
+    getCategories();
+    toast.success('Category Deleted Succesfully', {autoClose:1000})
+}
+
 onMounted(() => {
     getCategories();
 })
@@ -33,10 +47,10 @@ onMounted(() => {
                         <h3 class="text-primary text-3xl font-semibold">Category</h3>
                     </div>
                     <div>
-                        <Button class="flex items-center gap-2">
+                        <RouterLink to="/create-category" class="bg-primary text-white px-5 py-2 flex items-center gap-2">
                             <Icon name="material-symbols:add-box-outline" />
                             Add Record
-                        </Button>
+                        </RouterLink>
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
@@ -67,6 +81,12 @@ onMounted(() => {
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-white  uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
                     <tr>
+                        <th scope="col" class="p-4">
+                            <div class="flex items-center">
+                                <input id="checkbox-all" type="checkbox" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="checkbox-all" class="sr-only">checkbox</label>
+                            </div>
+                        </th>
                         <th scope="col" class="px-6 py-3">
                            Icon
                         </th>
@@ -80,6 +100,9 @@ onMounted(() => {
                             Status
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Order Number
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Created By
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -89,12 +112,18 @@ onMounted(() => {
                     </thead>
                     <tbody>
                     <tr v-for="category in categories" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td class="w-4 px-4 py-3">
+                            <div class="flex items-center">
+                                <input id="checkbox-table-search-1" type="checkbox" onclick="event.stopPropagation()" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                            </div>
+                        </td>
                         <th class="flex items-center px-6 py-4">
-                            <img :src="category?.icon" alt="">
+                            <img class="w-16 h-auto" :src="category?.icon" :alt="category?.name">
                         </th>
 
                         <td class="px-6 py-4">
-                            <img :src="category?.banner" class="w-16 md:w-40 h-16 max-w-full max-h-full" alt="">
+                            <img :src="category?.banner" class="w-16 md:w-40 h-16 max-w-full max-h-full" :alt="category?.name">
                         </td>
                         <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                             <div>
@@ -105,6 +134,9 @@ onMounted(() => {
                             <div class="flex items-center">
                                 <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
                             </div>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            {{ 1 }}
                         </td>
                         <td class="px-6 py-4">
                             Bonnie Green
@@ -118,7 +150,7 @@ onMounted(() => {
                                 <button class="w-8 h-8 rounded-md flex items-center justify-center bg-yellow-400/10 border border-yellow-900">
                                     <Icon name="material-symbols:edit-square-outline" class="text-lg text-yellow-900" />
                                 </button>
-                                <button class="w-8 h-8 rounded-md flex items-center justify-center bg-red-400/10 border border-red-900">
+                                <button @click="deleteCategory(category?.id)" class="w-8 h-8 rounded-md flex items-center justify-center bg-red-400/10 border border-red-900">
                                     <Icon name="material-symbols:delete-outline" class="text-lg text-red-900" />
                                 </button>
                             </div>

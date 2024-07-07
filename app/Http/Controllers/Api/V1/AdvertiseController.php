@@ -11,9 +11,13 @@ use Illuminate\Support\Facades\Storage;
 
 class AdvertiseController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $advertieses = Advertise::query()
+                    ->whereLinke(['url'], $request->input('search'))
+                    ->paginate(12);
+
+        return AdvertiseResource::collection($advertieses);            
     }
 
     public function store(Request $request)
@@ -24,21 +28,34 @@ class AdvertiseController extends Controller
             'products' => 'required',
         ]);
 
+        if($request->hasFile('image')){
+            $path ='/storage/'.$request->file('image')->store('uploads','public');
+            $data['image'] = $path;
+        }
         $advertise = Advertise::create($data);
-        return  AdvertiseResource::make($advertise);
-    }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        return  AdvertiseResource::make($advertise);
     }
 
     public function update(Request $request, string $id)
     {
-        //
+        $advertise = Advertise::fiindOrFail($id);
+
+        $data = $request->validate([
+            'title' => 'required|string',
+            'image' => 'required|mimes:png,jpg,jpeg,webp|between:300, 900',
+            'products' => 'required',
+        ]);
+
+        if($request->hasFile('image')){
+            $path ='/storage/'.$request->file('image')->store('uploads','public');
+            $data['image'] = $path;
+        }
+        $advertise = $advertise->update($data);
+
+        return  AdvertiseResource::make($advertise);
+
+
     }
 
     /**

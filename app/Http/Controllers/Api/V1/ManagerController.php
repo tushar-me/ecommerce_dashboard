@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\Storage;
 
 class ManagerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $managers = Manager::query()
@@ -26,9 +23,7 @@ class ManagerController extends Controller
         return ManagerListResource::collection($managers);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(ManagerRequest $request): ManagerShowResource
     {
         $data = $request->validated();
@@ -36,47 +31,41 @@ class ManagerController extends Controller
         return ManagerShowResource::make($manager);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $manager = Manager::findOrFail($id);
+        
         return ManagerShowResource::make($manager);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(ManagerRequest $request, string $id)
     {
         $manager = Manager::findOrFail($id);
-        $data = $request->validated();
-        return ManagerShowResource::make($data);
+        $manager = $manager->update($request->validated());
+
+        return ManagerShowResource::make($manager);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(string $id)
     {
         $manager = Manager::findOrFail($id);
         if($manager)
-            {
-                $image = $manager->image;
-                if($image){
-                    $imagePath = str_replace('/storage','public',$image);
-                    Storage::delete($imagePath);
-                }
-
-                $cover_image = $manager->cover_image;
-                if($cover_image) {
-                    $imagePath = str_replace('/storage','public',$image);
-                    Storage::delete($imagePath);
-                }
-                $manager->delete();
-
-                return Response::HTTP_OK;
+        {
+            $image = $manager->image;
+            if($image){
+                $imagePath = str_replace('/storage','public',$image);
+                Storage::delete($imagePath);
             }
+
+            $cover_image = $manager->cover_image;
+            if($cover_image) {
+                $imagePath = str_replace('/storage','public',$image);
+                Storage::delete($imagePath);
+            }
+            $manager->delete();
+
+            return Response::HTTP_OK;
+        }
     }
 }

@@ -1,123 +1,271 @@
 <script setup>
+import {ref} from 'vue';
 const props = defineProps({
         text: {
             type: Boolean,
             default: true
         }
     });
+
+    const isDashboardLinks = ref(false);
+    const isProductsLinks = ref(false);
+    const isCmsLinks = ref(false);
+    const isOrderLinks = ref(false);
+    const isUserLinks = ref(false);
+    const isSettingLinks = ref(false);
 </script>
 
 <template>
     <div class="relative">
         <div class="bg-white rounded-lg m-3 mb-5 shadow-2xl p-4 ">
-            <img src="https://creativetechpark.com/wp-content/uploads/2021/09/Creative-Tech-Park-Website-Design-Company-in-Bangladesh-Logo.png" class="w-full h-auto" alt="">
+            <img src="https://creativetechpark.com/wp-content/uploads/2021/09/Creative-Tech-Park-Website-Design-Company-in-Bangladesh-Logo.png" class="w-full h-auto">
         </div>
         <ul class="flex flex-col gap-5 pl-5">
+
+            <!-- Dashboard  -->
             <li>
-                <RouterLink  to="/dashboard" class="group flex items-center gap-2 relative">
-                    <div class=" w-8 h-8 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
-                        <Icon name="material-symbols:background-grid-small" size="20" class="text-white" />
+                <div class="group flex items-center gap-3  rounded-lg transition-all ease-in-out duration-300 cursor-pointer relative" @click="isDashboardLinks = !isDashboardLinks">
+                    <div class=" w-7 h-7 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
+                        <Icon name="material-symbols:background-grid-small"  class="text-sm text-white" />
                     </div>
-                    <p v-if="text" class="text-white">Dashboard</p>
-                </RouterLink>
+                    <span class="text-white text-sm font-normal transition-all ease-in-out duration-300">Dashboard</span>
+                    <div class="absolute top-1/2 -translate-y-1/2 right-2 transition-all  ease-in-out duration-300" :class="{'rotate-90 ' : isDashboardLinks}">
+                    <Icon name="ic:twotone-keyboard-arrow-right"  class="text-white transition-all ease-in-out duration-300"  />
+                    </div>
+                </div>
+                <div class="overflow-hidden">
+                    <ul class="shop-links flex flex-col gap-4 pl-4 py-4" :class="{'shop-links--active' : isDashboardLinks}">
+                        <li>
+                            <RouterLink to="/dashboard" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Dashboard</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/analytics" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Analytics</span>
+                            </RouterLink>
+                        </li>
+                    </ul>
+                </div>
             </li>
+
+            <!-- Dashboard End -->
+            
             <!-- <li>
                 <RouterLink to="/pos" class="flex items-center gap-2">
                     <div class="w-8 h-8 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
                         <Icon name="mdi:point-of-sale" size="20" class="text-white" />
                     </div>
-                    <p  v-if="text" class="text-white">Pos</p>
+                    <p  v-if="text" class="text-white text-sm">Pos</p>
                 </RouterLink>
             </li> -->
+
+
+            <!-- Products  -->
             <li>
-                <RouterLink  to="/products" class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
+                <div class="group flex items-center gap-3  rounded-lg transition-all ease-in-out duration-300 cursor-pointer relative" @click="isProductsLinks = !isProductsLinks">
+                    <div class=" w-7 h-7 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
+                        <Icon   name="carbon:ibm-data-product-exchange" class="text-sm text-white" />
+                    </div>
+                    <span class="text-white text-sm font-normal transition-all ease-in-out duration-300">Products</span>
+                    <div class="absolute top-1/2 -translate-y-1/2 right-2 transition-all  ease-in-out duration-300" :class="{'rotate-90 ' : isProductsLinks}">
+                    <Icon name="ic:twotone-keyboard-arrow-right" size="20" class="text-white transition-all ease-in-out duration-300"  />
+                    </div>
+                </div>
+                <div class="overflow-hidden">
+                    <ul class="shop-links flex flex-col gap-4 pl-4 py-4" :class="{'shop-links--active' : isProductsLinks}">
+                        <li>
+                            <RouterLink to="/products" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Products</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/category" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Category</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/brand" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Brand</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/product/attribute" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Attribute</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/stock" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Stock</span>
+                            </RouterLink>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <!-- Products End -->
+
+            <!-- Order  -->
+            <li>
+                <div class="group flex items-center gap-3  rounded-lg transition-all ease-in-out duration-300 cursor-pointer relative" @click="isOrderLinks = !isOrderLinks">
+                    <div class=" w-7 h-7 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
                         <Icon   name="carbon:ibm-data-product-exchange" size="20" class="text-white" />
                     </div>
-                    <p  v-if="text" class="text-white">Products</p>
-                </RouterLink>
-            </li>
-            <li>
-                <RouterLink  to="/category" class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
-                        <Icon name="carbon:category-new-each" size="20" class="text-white" />
+                    <span class="text-white text-sm font-normal transition-all ease-in-out duration-300">Order</span>
+                    <div class="absolute top-1/2 -translate-y-1/2 right-2 transition-all  ease-in-out duration-300" :class="{'rotate-90 ' : isOrderLinks}">
+                    <Icon name="ic:twotone-keyboard-arrow-right" size="20" class="text-white transition-all ease-in-out duration-300"  />
                     </div>
-                    <p  v-if="text" class="text-white">Category</p>
-                </RouterLink>
+                </div>
+                <div class="overflow-hidden">
+                    <ul class="shop-links flex flex-col gap-4 pl-4 py-4" :class="{'shop-links--active' : isOrderLinks}">
+                        <li>
+                            <RouterLink to="/order" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Orders</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/order/refund-request" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Refund Request</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/shipping" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Shipping Area</span>
+                            </RouterLink>
+                        </li>
+                    </ul>
+                </div>
             </li>
-            <li>
-                <RouterLink  to="/brand" class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
-                        <Icon name="tabler:brand-bandcamp" size="20" class="text-white" />
-                    </div>
-                    <p  v-if="text" class="text-white">Brand</p>
-                </RouterLink>
-            </li>
-            <li>
-                <RouterLink  to="/stock" class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
-                        <Icon name="ant-design:stock-outlined" size="20" class="text-white" />
-                    </div>
-                    <p  v-if="text" class="text-white">Stock</p>
-                </RouterLink>
-            </li>
+            <!-- Order End -->
 
+            <!-- Users  -->
             <li>
-                <RouterLink  to="/customers" class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
-                        <Icon name="oui:app-users-roles" size="20" class="text-white" />
+                <div class="group flex items-center gap-3  rounded-lg transition-all ease-in-out duration-300 cursor-pointer relative" @click="isUserLinks = !isUserLinks">
+                    <div class=" w-7 h-7 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
+                        <Icon   name="carbon:ibm-data-product-exchange" size="20" class="text-white" />
                     </div>
-                    <p  v-if="text" class="text-white">Customer</p>
-                </RouterLink>
+                    <span class="text-white text-sm font-normal transition-all ease-in-out duration-300">Users</span>
+                    <div class="absolute top-1/2 -translate-y-1/2 right-2 transition-all  ease-in-out duration-300" :class="{'rotate-90 ' : isUserLinks}">
+                    <Icon name="ic:twotone-keyboard-arrow-right" size="20" class="text-white transition-all ease-in-out duration-300"  />
+                    </div>
+                </div>
+                <div class="overflow-hidden">
+                    <ul class="shop-links flex flex-col gap-4 pl-4 py-4" :class="{'shop-links--active' : isUserLinks}">
+                        <li>
+                            <RouterLink to="/admin" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Admin</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/manager" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Manager</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/customers" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Customer</span>
+                            </RouterLink>
+                        </li>
+                    </ul>
+                </div>
             </li>
+            <!-- Users End -->
+
+            <!-- CMS  -->
             <li>
-                <RouterLink  to="/manager" class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
-                        <Icon name="hugeicons:manager" size="20" class="text-white" />
+                <div class="group flex items-center gap-3  rounded-lg transition-all ease-in-out duration-300 cursor-pointer relative" @click="isCmsLinks = !isCmsLinks">
+                    <div class=" w-7 h-7 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
+                        <Icon   name="carbon:ibm-data-product-exchange" size="20" class="text-white" />
                     </div>
-                    <p  v-if="text" class="text-white">Manager</p>
-                </RouterLink>
+                    <span class="text-white text-sm font-normal transition-all ease-in-out duration-300">CMS</span>
+                    <div class="absolute top-1/2 -translate-y-1/2 right-2 transition-all  ease-in-out duration-300" :class="{'rotate-90 ' : isCmsLinks}">
+                    <Icon name="ic:twotone-keyboard-arrow-right" size="20" class="text-white transition-all ease-in-out duration-300"  />
+                    </div>
+                </div>
+                <div class="overflow-hidden">
+                    <ul class="shop-links flex flex-col gap-4 pl-4 py-4" :class="{'shop-links--active' : isCmsLinks}">
+                        <li>
+                            <RouterLink to="/slider" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Home Banner</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/advertise" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Advertise</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/custom-pages" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Pages</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/blog" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Blog</span>
+                            </RouterLink>
+                        </li>
+                    </ul>
+                </div>
             </li>
+            <!-- CMS End -->
+
+            <!-- Setting -->
             <li>
-                <RouterLink  to="/order" class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
-                        <Icon name="material-symbols:orders-outline" size="20" class="text-white" />
+                <div class="group flex items-center gap-3  rounded-lg transition-all ease-in-out duration-300 cursor-pointer relative" @click="isSettingLinks = !isSettingLinks">
+                    <div class=" w-7 h-7 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
+                        <Icon   name="carbon:ibm-data-product-exchange" size="20" class="text-white" />
                     </div>
-                    <p  v-if="text" class="text-white">Order</p>
-                </RouterLink>
-            </li>
-            <li>
-                <RouterLink to="/shipping" class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
-                        <Icon name="ph:map-pin-area" size="20" class="text-white" />
+                    <span class="text-white text-sm font-normal transition-all ease-in-out duration-300">Settings</span>
+                    <div class="absolute top-1/2 -translate-y-1/2 right-2 transition-all  ease-in-out duration-300" :class="{'rotate-90 ' : isSettingLinks}">
+                    <Icon name="ic:twotone-keyboard-arrow-right" size="20" class="text-white transition-all ease-in-out duration-300"  />
                     </div>
-                    <p  v-if="text" class="text-white">Shipping</p>
-                </RouterLink>
+                </div>
+                <div class="overflow-hidden">
+                    <ul class="shop-links flex flex-col gap-4 pl-4 py-4" :class="{'shop-links--active' : isSettingLinks}">
+                        <li>
+                            <RouterLink to="/app-setting" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">App</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/home-setting" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Home</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/header-setting" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Header</span>
+                            </RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink to="/footer-setting" class="flex items-center gap-3 ">
+                                <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                                <span class="text-sm text-white">Footer</span>
+                            </RouterLink>
+                        </li>
+                    </ul>
+                </div>
             </li>
-            <li>
-                <RouterLink to="/slider" class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
-                        <Icon name="solar:slider-vertical-minimalistic-bold" size="20" class="text-white" />
-                    </div>
-                    <p  v-if="text" class="text-white">Slider</p>
-                </RouterLink>
-            </li>
-            <li>
-                <RouterLink to="/advertise" class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
-                        <Icon name="hugeicons:advertisement" size="20" class="text-white" />
-                    </div>
-                    <p  v-if="text" class="text-white">Advertise</p>
-                </RouterLink>
-            </li>
-            <li>
-                <RouterLink  to="/setting" class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
-                        <Icon name="material-symbols:settings-outline-rounded" size="20" class="text-white" />
-                    </div>
-                    <p  v-if="text" class="text-white">Settings</p>
-                </RouterLink>
-            </li>
+            <!-- Setting End--> 
         </ul>
     </div>
 </template>

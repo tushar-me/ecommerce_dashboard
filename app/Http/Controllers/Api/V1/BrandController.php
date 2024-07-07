@@ -28,9 +28,16 @@ class BrandController extends Controller
         return BrandListResource::collection($brands);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
+    public function getAllBrandList()
+    {
+        $brands = Brand::query()
+        ->select('id', 'slug', 'name')
+        ->get();
+
+        return BrandListResource::collection($brands);
+    }
+
     public function store(BrandRequest $request)
     {
         $data = $request->validated();
@@ -88,23 +95,19 @@ class BrandController extends Controller
         return BrandShowResource::make($brand);
     }
 
-    public function destroy(string $id): int
+    public function destroy(string $id)
     {
-        if(Auth::check() && Auth::user()->role === 'admin')
+        $brand = Brand::findOrFail($id);
+        if($brand)
         {
-            $brand = Brand::findOrFail($id);
-            if($brand)
-            {
-                $image = $brand->image;
-                if($image){
-                    $imagePath = str_replace('/storage','public',$image);
-                    Storage::delete($imagePath);
-                }
-                $brand->delete();
-
-                return Response::HTTP_OK;
+            $image = $brand->image;
+            if($image){
+                $imagePath = str_replace('/storage','public',$image);
+                Storage::delete($imagePath);
             }
+            $brand->delete();
+
+            return Response::HTTP_OK;
         }
-        throw new UnauthorizedException(__("unauthenticated_access"));
     }
 }

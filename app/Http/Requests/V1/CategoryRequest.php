@@ -23,12 +23,13 @@ class CategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:categories,slug,',
-            'parent_id' => 'nullable|integer|exists:categories,id',
-            'icon' => 'nullable||mimes:png,jpg,jpeg,webp|between:300, 900',
-            'banner' => 'nullable|mimes:png,jpg,jpeg,webp|between:300, 900',
+            'slug' => 'nullable',
+            'parent_id' => 'nullable|integer',
+            'icon' => 'nullable||mimes:png,jpg,jpeg,webp',
+            'banner' => 'nullable|mimes:png,jpg,jpeg,webp',
             'description' => 'nullable|string',
-            'status' => 'required|in:active,inactive',
+            'status' => 'nullable|in:active,inactive',
         ];
     }
+    protected  $stopOnFirstFailure = true;
 }

@@ -31,17 +31,16 @@ return new class extends Migration
             $table->string('slug')->unique()->index();
             $table->string('cover_image');
             $table->string('hover_image')->nullable();
-            $table->string('preview_video')->nullable();
             $table->string('video_url')->nullable();
             $table->mediumText('short_description')->nullable();
             $table->longText('description')->nullable();
             $table->longText('detail')->nullable();
             $table->longText('specification')->nullable();
             $table->string('sku')->nullable()->index();
-            $table->integer('stock')->nullable();
             $table->string('bar_code')->nullable()->index();
             $table->integer('price')->default(0)->index();
             $table->integer('discount')->nullable();
+            $table->integer('visited')->default(0);
             $table->enum('status', ['active','inactive'])->default('active')->index();
             $table->timestamps();
         });

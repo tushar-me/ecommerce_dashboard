@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
@@ -20,6 +20,11 @@ const router = createRouter({
       component: () => import('@/pages/Dashboard/Index.vue')
     },
     {
+      path:'/analytics',
+      name:'analytics',
+      component: () => import('@/pages/Dashboard/Analytics.vue')
+    },
+    {
       path: '/pos',
       name: 'Pos',
       component: () => import('@/pages/Pos/Index.vue')
@@ -28,6 +33,11 @@ const router = createRouter({
       path: '/products',
       name: 'Products',
       component: () => import('@/pages/Products/Index.vue')
+    },
+    {
+      path: '/product/attribute',
+      name: 'ProductAttribute',
+      component: () => import('@/pages/Products/Attribute.vue')
     },
     {
       path: '/create-product',
@@ -69,7 +79,7 @@ const router = createRouter({
     {
       path: '/create-brand',
       name: 'CreateBrand',
-      component: () => import('@/pages/Brand/Index.vue')
+      component: () => import('@/pages/Brand/Add.vue')
     },
       {
       path: '/stock',
@@ -106,20 +116,25 @@ const router = createRouter({
       name: 'EditManager',
       component: () => import('@/pages/Manager/Edit.vue')
     },
-      {
+    {
+      path:'/admin',
+      name: 'Admiin',
+      component: () => import('@/pages/Admins/Index.vue'),
+    },
+    {
       path: '/order',
       name: 'Order',
       component: () => import('@/pages/Order/Index.vue')
     },
-      {
+    {
+      path:'/order/refund-request',
+      name: 'RefundRequest',
+      component: () => import('@/pages/Order/RefundRequest.vue')
+    },
+    {
       path: '/shipping',
       name: 'Shipping',
       component: () => import('@/pages/Shipping/Index.vue')
-    },
-      {
-      path: '/setting',
-      name: 'Setting',
-      component: () => import('@/pages/Setting/Index.vue')
     },
       {
       path: '/slider',
@@ -151,10 +166,40 @@ const router = createRouter({
       name: 'EditAdvertise',
       component: () => import('@/pages/Advertise/Edit.vue')
     },
+    {
+      path: '/blog',
+      name: 'Blog',
+      component: () => import('@/pages/Blog/Index.vue')
+    },
+    {
+      path: '/custom-pages',
+      name: 'CustomPages',
+      component: () => import('@/pages/CustomPages/Index.vue')
+    },
       {
       path: '/profile',
       name: 'Profile',
       component: () => import('@/pages/Profile/Index.vue')
+    },
+    {
+      path: '/app-setting',
+      name: 'AppSetting',
+      component: () => import('@/pages/Setting/AppSetting.vue')
+    },
+    {
+      path: '/home-setting',
+      name: 'HomeSetting',
+      component: () => import('@/pages/Setting/HomeSetting.vue')
+    },
+    {
+      path: '/Header-setting',
+      name: 'HeaderSetting',
+      component: () => import('@/pages/Setting/HeaderSetting.vue')
+    },
+    {
+      path: '/footer-setting',
+      name: 'FooterppSetting',
+      component: () => import('@/pages/Setting/FooterSetting.vue')
     },
   ]
 })

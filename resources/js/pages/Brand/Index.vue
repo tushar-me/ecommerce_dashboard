@@ -66,6 +66,12 @@ onMounted(() => {
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-white  uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
                     <tr>
+                        <th scope="col" class="p-4">
+                            <div class="flex items-center">
+                                <input id="checkbox-all" type="checkbox" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="checkbox-all" class="sr-only">checkbox</label>
+                            </div>
+                        </th>
                         <th scope="col" class="px-6 py-3">
                             Logo
                         </th>
@@ -88,6 +94,12 @@ onMounted(() => {
                     </thead>
                     <tbody>
                     <tr v-for="brand in brands" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td class="w-4 px-4 py-3">
+                            <div class="flex items-center">
+                                <input id="checkbox-table-search-1" type="checkbox" onclick="event.stopPropagation()" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                            </div>
+                        </td>
                         <th class="flex items-center px-6 py-4">
                             <img class="h-16 w-16" :src="brand?.logo" alt="">
                         </th>

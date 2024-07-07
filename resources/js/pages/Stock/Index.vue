@@ -1,14 +1,11 @@
-<script setup>
-import AppLayout from "@/components/Layouts/AppLayout.vue";
-</script>
 <template>
     <AppLayout>
         <section class="px-4">
             <div class="bg-white p-4">
                 <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <Icon name="healthicons:stock-out-outline" class="text-3xl text-primary" />
-                        <h3 class="text-primary text-3xl font-semibold">Stock</h3>
+                    <div class="flex items-center gap-2">
+                        <Icon name="simple-icons:nginxproxymanager" class="text-lg text-primary" />
+                        <h3 class="text-primary text-lg font-semibold">Prodcut Stock</h3>
                     </div>
                     <div>
                         <Button class="flex items-center gap-2">
@@ -26,7 +23,7 @@ import AppLayout from "@/components/Layouts/AppLayout.vue";
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                 </svg>
                             </div>
-                            <input type="text" id="table-search-users" class="block p-2 ps-10 text-sm text-gray-900 border border-primary rounded-lg w-96 bg-gray-50 focus:ring-primary focus:border-primary" placeholder="Search for Customers">
+                            <input type="text" id="table-search-users" class="block p-2 ps-10 text-sm text-gray-900 border border-primary rounded-lg w-96 bg-gray-50 focus:ring-primary focus:border-primary" placeholder="Search for Product Stock...">
                         </div>
                     </div>
 
@@ -40,6 +37,79 @@ import AppLayout from "@/components/Layouts/AppLayout.vue";
                 </div>
             </div>
         </section>
+        <div class="mx-5 bg-white">
+            <div class="relative overflow-x-auto">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-white  uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="p-4">
+                            <div class="flex items-center">
+                                <input id="checkbox-all" type="checkbox" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="checkbox-all" class="sr-only">checkbox</label>
+                            </div>
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Product
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Attribute
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Varient
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Stock Status
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Current Stock
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Action
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="order in 8" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td class="w-4 px-4 py-3">
+                            <div class="flex items-center">
+                                <input id="checkbox-table-search-1" type="checkbox" onclick="event.stopPropagation()" class="w-4 h-4 bg-gray-100 border-gray-300 rounded text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                            </div>
+                        </td>
+                        <th scope="row" class="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsp0ZAEUGTbgNheqM0F5FyHrMBIUjJfKyEtw&s" alt="iMac Front Image" class="w-auto h-8 mr-3">
+                            HP Stream 14 Laptop - Intel Celeron N4000
+                        </th>
+                        <th scope="row" class="px-6 py-4">
+                            Size
+                        </th>
+                        <td class="px-6 py-4">
+                            14 inch
+                        </td>
+                        <td class="px-6 py-4">
+                            25
+                        </td>
+                        <td class="px-6 py-4">
+                            24-30-1999
+                        </td>
+                        
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <button class="w-8 h-8 rounded-md flex items-center justify-center bg-green-400/10 border border-green-900">
+                                    <Icon  name="material-symbols:visibility-outline-rounded" class="text-xl text-green-900" />
+                                </button>
+                                <button class="w-8 h-8 rounded-md flex items-center justify-center bg-yellow-400/10 border border-yellow-900">
+                                    <Icon name="material-symbols:edit-square-outline" class="text-lg text-yellow-900" />
+                                </button>
+                                <button class="w-8 h-8 rounded-md flex items-center justify-center bg-red-400/10 border border-red-900">
+                                    <Icon name="material-symbols:delete-outline" class="text-lg text-red-900" />
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </AppLayout>
 </template>
-

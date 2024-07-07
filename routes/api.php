@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\BrandController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Controllers\Api\V1\ManagerController;
+use App\Http\Controllers\Api\V1\ProductAttributeController;
 use App\Http\Controllers\Api\V1\SliderController;
 use App\Http\Controllers\Auth\Admin\LoginController as AdminLoginController;
 use App\Http\Controllers\Auth\Manager\LoginController as ManagerLoginController;
@@ -41,13 +42,25 @@ Route::get('/user', function (Request $request) {
 Route::prefix('v1')->middleware(['auth:sanctum', 'throttle:api', 'type.admin'])->group( function () { 
 
     Route::get('/delete-product-image', [ProductController::class, 'deleteImage']);
+
+
+    // Category Route
+    Route::get('/parent-category', [CategoryController::class, 'getParent']);
+    Route::get('/get-all-category-list', [CategoryController::class, 'getAllCategoryList']);
+    Route::apiResource('category', CategoryController::class);
+
+    //Brand Rote
+    Route::get('/get-all-brand-list', [BrandController::class, 'getAllBrandList']);
+    Route::apiResource('brand', BrandController::class);
+
+
     Route::apiResources([
-        'category' => CategoryController::class,
-        'brand' => BrandController::class,
         'product' => ProductController::class,
         'customer' => CustomerController::class,
         'manager' => ManagerController::class,
         'slider' => SliderController::class,
         'advertise' => AdvertiseController::class,
     ]);
+
+    Route::apiResource('product-attribute', ProductAttributeController::class);
 });

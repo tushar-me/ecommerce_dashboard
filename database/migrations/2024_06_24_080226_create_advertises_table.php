@@ -19,6 +19,7 @@ return new class extends Migration
             $table->longText('products');
             $table->enum('discount_type', ['percentage','flat'])->nullable();
             $table->integer('discount_price')->nullable();
+            $table->integer('order_number')->nullable();
             $table->boolean('status')->default(false);
             $table->timestamps();
         });

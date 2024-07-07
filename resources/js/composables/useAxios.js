@@ -1,10 +1,15 @@
 import { ref } from 'vue';
 import axios from 'axios';
+// import { useAuthStore } from '@/stores/useAuthStore.js';
+// const authStore = useAuthStore();
+import { toast } from 'vue3-toastify';
 
 const axiosInstance  = axios.create({
-    baseURL: 'https://dashboard.ctpse.info/api', // 'http://localhost:8000/api', https://dashboard.ctpse.info/api
+    baseURL: 'http://localhost:8000/api', // 'http://localhost:8000/api', https://dashboard.ctpse.info/api
     withCredentials: true,
     xsrfHeaderName: "X-XSRF-TOKEN",
+    
+    
 });
 
 export default function useAxios() {
@@ -19,7 +24,7 @@ export default function useAxios() {
             return response;
         } catch (err) {
             error.value = err.response ? err.response.data : err.message;
-            throw err;
+            toast.error(error.value.message, {autoClose: 2000});
         } finally {
             loading.value = false;
         }

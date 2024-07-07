@@ -29,14 +29,14 @@ onMounted(() => {
             <div class="bg-white p-4">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <Icon name="carbon:ibm-data-product-exchange" class="text-3xl text-primary" />
-                        <h3 class="text-primary text-3xl font-semibold">Products</h3>
+                        <Icon name="carbon:ibm-data-product-exchange" class="text-lg text-primary" />
+                        <h3 class="text-primary text-lg font-semibold">Products</h3>
                     </div>
                     <div>
-                        <Button class="flex items-center gap-2">
+                        <RouterLink to="/create-product" class="bg-primary px-4 py-2 text-white flex items-center gap-2">
                             <Icon name="material-symbols:add-box-outline" />
                             Add Record
-                        </Button>
+                        </RouterLink>
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
@@ -54,9 +54,10 @@ onMounted(() => {
 
                     <div class="flex items-center gap-3">
                         <Select
-                        class="w-52"
+                        class="w-96"
                         placeholder="select category"
                         :options="['Canada', 'United States']"
+                        multiple
                         ></Select>
                         <Select
                         class="w-52"
@@ -89,10 +90,6 @@ onMounted(() => {
                             <h5>
                                 <span class="text-gray-500">All Products:</span>
                                 <span class="dark:text-white">123456</span>
-                            </h5>
-                            <h5>
-                                <span class="text-gray-500">Total sales:</span>
-                                <span class="dark:text-white">$88.4k</span>
                             </h5>
                         </div>
                         <div class="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center lg:justify-end md:space-y-0 md:space-x-3">
@@ -164,7 +161,7 @@ onMounted(() => {
                                     </td>
                                     <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">1.47</td>
                                     <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">0.47</td>
-                                    
+
                                     <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <div class="flex items-center">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" class="w-5 h-5 mr-2 text-gray-400" aria-hidden="true">
