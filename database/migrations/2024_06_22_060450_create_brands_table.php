@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('banner')->nullable();
             $table->longText('description')->nullable();
             $table->integer('order_number')->nullable();
-            $table->enum('status', ['active','inactive'])->default('active')->index();
+            $table->boolean('status')->default(true)->index();
             $table->timestamps();
         });
     }

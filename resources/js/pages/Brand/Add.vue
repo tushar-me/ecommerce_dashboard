@@ -1,41 +1,115 @@
 <script setup>
 import Editor from "@/components/Editor.vue";
+import useAxios from "@/composables/useAxios"
+import { useAuthStore } from "@/stores/useAuthStore";
+import { toast } from "vue3-toastify";
+import { ref, onMounted } from "vue";
+import { useRouter} from 'vue-router'
+const { loading, error, sendRequest } = useAxios();
+const authStore = useAuthStore(); 
+const router = useRouter();
+
+const logoImg = ref(null);
+const bannerImg = ref(null);
+
+
+
+const form = ref({
+    name: null,
+    logo:null,
+    banner: null,
+    status:1,
+    order_number: null,
+    description: null,
+});
+
+const banner = (banner) => {
+    const file = banner.target.files[0];
+    form.value.banner = file;
+    bannerImg.value = URL.createObjectURL(file);
+}
+const logo = (logo) => {
+    const file = logo.target.files[0];
+    form.value.logo = file;
+    logoImg.value = URL.createObjectURL(file);
+}
+
+
+const onSubmit = async() => {
+    console.log(form.value);
+    const response = await sendRequest({
+        method: 'post',
+        url: '/v1/brand',
+        data: form.value,
+        headers: {
+            authorization: `Bearer ${authStore.user.token}`,
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+    if(response?.data){
+        toast.success( `${response?.data?.name} Brand Addded Succesfully`, {autoclose:1000});
+        await router.push('/brand');
+    }
+}
 </script>
 <template>
     <AppLayout>
         <div class="bg-white shadow-md p-6 max-w-5xl mx-auto">
             <h3 class="mb-10">Create a New Brand</h3>
             <div>
-                <div class="flex items-center">
+                <div class="flex flex-wrap items-center">
                     <div class="w-1/2 pr-2">
                         <div class="w-full">
                             <label for="name" class="text-sm block mb-2">Brand Name</label>
-                            <input type="text" class="border border-primary rounded-md font-normal text-sm w-full">
+                            <input v-model="form.name" type="text" class="border border-primary rounded-md font-normal text-sm w-full">
+                        </div>
+                    </div>
+                    <div class="w-1/2 pr-2">
+                        <div class="w-full">
+                            <label for="name" class="text-sm block mb-2">Order Number</label>
+                            <input v-model="form.order_number" type="number" class="border border-primary rounded-md font-normal text-sm w-full">
+                        </div>
+                    </div>
+                    <div class="w-1/2 pt-5">
+                        <div class="w-full">
+                            <label for="name" class="text-sm block mb-2">Brand Status</label>
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm">Inactive</span>
+                                <div class="checkbox">
+                                    <input type="checkbox" v-model="form.status"  id="status" class="hidden" checked> 
+                                    <label for="status">
+                                        <span></span>
+                                    </label>
+                                </div>
+                                <span class="text-sm">Active</span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="flex items-center my-10">
                     <div class="w-1/3 pr-2">
                         <div class="w-full">
-                            <label for="name" class="text-sm block mb-2">Brand Logo</label>
-                            <label class="border border-primary border-dashed p-4 rounded-2xl flex items-center justify-center w-full h-40 cursor-pointer">
-                                <div class="flex flex-col items-center justify-center gap-2">
+                            <label for="brand-image" class="text-sm block mb-2">Brand Image</label>
+                            <label class="border border-primary border-dashed p-4 rounded-2xl flex items-center justify-center w-full h-52 cursor-pointer" for="brand-image">
+                                <img v-if="logoImg" :src="logoImg" class="w-full h-full">
+                                <div v-if="!logoImg" class="flex flex-col items-center justify-center gap-2">
                                     <Icon name="tabler:cloud-upload" class="text-primary text-5xl opacity-85" />
                                     <span class="text-primary font-semibold opacity-85">Upload Brand Logo</span>
                                 </div>
-                                <input type="file" hidden>
+                                <input id="brand-image" @change="logo" type="file" hidden>
                             </label>
                         </div>
                     </div>
                     <div class="w-2/3 pl-2">
                         <div class="w-full">
-                            <label for="name" class="text-sm block mb-2">Brand Banner</label>
-                            <label class="border border-primary border-dashed p-4 rounded-2xl flex items-center justify-center w-full h-40 cursor-pointer">
-                                <div class="flex flex-col items-center justify-center gap-2">
+                            <label for="brand-banner" class="text-sm block mb-2">Brand Banner</label>
+                            <label for="brand-banner" class="border border-primary border-dashed p-4 rounded-2xl flex items-center justify-center w-full h-52 cursor-pointer">
+                                <img v-if="bannerImg" :src="bannerImg" class="w-full h-full rounded-md">
+                                <div v-if="!bannerImg" class="flex flex-col items-center justify-center gap-2">
                                     <Icon name="tabler:cloud-upload" class="text-primary text-5xl opacity-85" />
                                     <span class="text-primary font-semibold opacity-85">Upload Brand Banner</span>
                                 </div>
-                                <input type="file" hidden>
+                                <input id="brand-banner" @change="banner" type="file" hidden>
                             </label>
                         </div>
                     </div>
@@ -45,7 +119,7 @@ import Editor from "@/components/Editor.vue";
                 </div>
             </div>
             <div class="mt-5">
-                <Button>Save Brand</Button>
+                <Button @click="onSubmit">Save Brand</Button>
             </div>
         </div>
     </AppLayout>

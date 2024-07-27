@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import useAxios from "@/composables/useAxios"
 import { useAuthStore } from '@/stores/useAuthStore.js';
+import { toast } from 'vue3-toastify';
 const authStore = useAuthStore();
 const { loading, error, sendRequest } = useAxios();
 
@@ -18,6 +19,21 @@ const getBrands = async() => {
     brands.value = res?.data?.data
 }
 
+const deleteBrand = async(brand) => {
+    const response = await sendRequest({
+        method: 'delete',
+        url: `/v1/brand/${brand}`,
+        headers: {
+            authorization: `Bearer ${authStore.user.token}`
+        }
+    });
+
+    if(response){
+        getBrands();
+        toast.success('Brand Deleted Succesfully', {autoClose:1000});
+    }
+}
+
 onMounted(() => {
     getBrands();
 })
@@ -32,10 +48,10 @@ onMounted(() => {
                         <h3 class="text-primary text-3xl font-semibold">Brand</h3>
                     </div>
                     <div>
-                        <Button class="flex items-center gap-2">
+                        <RouterLink to="/create-brand" class="flex items-center gap-2 bg-primary text-white px-4 py-2">
                             <Icon name="material-symbols:add-box-outline" />
                             Add Record
-                        </Button>
+                        </RouterLink>
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
@@ -47,7 +63,7 @@ onMounted(() => {
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                 </svg>
                             </div>
-                            <input type="text" id="table-search-users" class="block p-2 ps-10 text-sm text-gray-900 border border-primary rounded-lg w-96 bg-gray-50 focus:ring-primary focus:border-primary" placeholder="Search for Customers">
+                            <input type="text" id="table-search-users" class="block p-2 ps-10 text-sm text-gray-900 border border-primary rounded-lg w-96 bg-gray-50 focus:ring-primary focus:border-primary" placeholder="Search for Brands..">
                         </div>
                     </div>
 
@@ -85,6 +101,9 @@ onMounted(() => {
                             Status
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Order Number
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Created By
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -101,7 +120,7 @@ onMounted(() => {
                             </div>
                         </td>
                         <th class="flex items-center px-6 py-4">
-                            <img class="h-16 w-16" :src="brand?.logo" alt="">
+                            <img class="h-16 w-16" :src="brand?.logo">
                         </th>
 
                         <td class="px-6 py-4">
@@ -113,9 +132,17 @@ onMounted(() => {
                             </div>
                         </th>
                         <td class="px-6 py-4">
-                            <div class="flex items-center">
-                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
+                            <div class="flex items-center gap-2">
+                                <div class="checkbox">
+                                    <input type="checkbox"   :id="`status-${brand?.id}`" class="hidden" checked> 
+                                    <label :for="`status-${brand?.id}`">
+                                        <span></span>
+                                    </label>
+                                </div>
                             </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ brand?.order_number }}
                         </td>
                         <td class="px-6 py-4">
                             Bonnie Green
@@ -129,7 +156,7 @@ onMounted(() => {
                                 <button class="w-8 h-8 rounded-md flex items-center justify-center bg-yellow-400/10 border border-yellow-900">
                                     <Icon name="material-symbols:edit-square-outline" class="text-lg text-yellow-900" />
                                 </button>
-                                <button class="w-8 h-8 rounded-md flex items-center justify-center bg-red-400/10 border border-red-900">
+                                <button @click="deleteBrand(brand?.id)" class="w-8 h-8 rounded-md flex items-center justify-center bg-red-400/10 border border-red-900">
                                     <Icon name="material-symbols:delete-outline" class="text-lg text-red-900" />
                                 </button>
                             </div>

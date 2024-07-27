@@ -1,3 +1,47 @@
-.ql-editor {
-    @apply min-h-52;
+
+.editor_data {
+    h1 {
+        font-size: 40px;
+    }
+    table {
+        width: 100%;
+        border: 1px solid #7b7b7b;
+        tr {
+            border: 1px solid #8c8c8c;
+            td {
+                border: 1px solid #878787;
+                padding: 6px;
+            }
+        }
+        
+    }
+    ul {
+        padding-left: 20px;
+        li {
+            list-style:square;
+        }
+    }
+    ol {
+        padding-left: 20px;
+        li {
+            list-style:decimal;
+        }
+    }
+
+    img {
+        @media only screen and (max-width: 600px) {
+            width: 100% !important;
+        }
+    }
+    
+    .note-editable {
+        min-height: 320px;
+    }
+    .note-modal-footer {
+        height: 60px;
+    }    
+    .note-group-select-from-files {
+        display: none !important;
+    }
+   
 }

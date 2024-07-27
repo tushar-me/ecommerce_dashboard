@@ -11,7 +11,7 @@ class BrandRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,11 +23,13 @@ class BrandRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:categories,slug,',
-            'logo' => 'nullable||mimes:png,jpg,jpeg,webp|between:300, 900',
-            'banner' => 'nullable|mimes:png,jpg,jpeg,webp|between:300, 900',
+            'slug' => 'nullable|string|max:255|unique:brands,slug,',
+            'logo' => 'nullable|mimes:png,jpg,jpeg,webp',
+            'order_number' => 'required:integer',
+            'banner' => 'nullable|mimes:png,jpg,jpeg,webp',
             'description' => 'nullable|string',
-            'status' => 'required|in:active,inactive',
+            'status' => 'required',
         ];
     }
+    protected $stopOnFirstFailure = true;
 }

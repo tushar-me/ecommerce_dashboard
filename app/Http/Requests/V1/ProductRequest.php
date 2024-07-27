@@ -22,14 +22,13 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
+            'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'nullable|integer',
             'updated_by' => 'nullable|integer',
-            'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:products,slug',
-            'cover_image' => 'required|mimes:png,jpg,jpeg,webp|between:300, 900',
-            'hover_image' => 'nullable|mimes:png,jpg,jpeg,webp|between:300, 900',
+            'slug' => 'nullable|string|max:255|unique:products,slug',
+            'cover_image' => 'required|mimes:png,jpg,jpeg,webp',
+            'hover_image' => 'nullable|mimes:png,jpg,jpeg,webp',
             'preview_video' => 'nullable|mimes:mp4',
             'video_url' => 'nullable|string',
             'short_description' => 'nullable|string',
@@ -40,9 +39,11 @@ class ProductRequest extends FormRequest
             'stock' => 'nullable|integer',
             'bar_code' => 'nullable|string|max:255',
             'price' => 'required|integer|min:0',
-            'discount' => 'nullable|integer|min:0',
-            'status' => 'required|in:active,inactive',
+            'discount_price' => 'nullable|integer|min:0',
+            'status' => 'required',
             'images' => 'nullable|string',
         ];
     }
+
+    protected $stopOnFirstFailure = true;
 }

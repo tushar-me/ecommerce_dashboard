@@ -32,16 +32,16 @@ return new class extends Migration
             $table->string('cover_image');
             $table->string('hover_image')->nullable();
             $table->string('video_url')->nullable();
+            $table->double('price')->default(0);
+            $table->double('discount_price')->default(0);
+            $table->string('sku')->nullable();
+            $table->string('bar_code')->nullable();
             $table->mediumText('short_description')->nullable();
             $table->longText('description')->nullable();
             $table->longText('detail')->nullable();
             $table->longText('specification')->nullable();
-            $table->string('sku')->nullable()->index();
-            $table->string('bar_code')->nullable()->index();
-            $table->integer('price')->default(0)->index();
-            $table->integer('discount')->nullable();
             $table->integer('visited')->default(0);
-            $table->enum('status', ['active','inactive'])->default('active')->index();
+            $table->boolean('status')->default(true)->index();
             $table->timestamps();
         });
     }

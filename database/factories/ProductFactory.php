@@ -22,25 +22,21 @@ class ProductFactory extends Factory
     {
         $title = $this->faker->unique()->words(3, true);
         return [
-            'user_id' => function(){return User::inRandomOrder()->value('id');},
             'category_id' => function(){return Category::inRandomOrder()->value('id');},
             'brand_id' => function(){return Brand::inRandomOrder()->value('id');},
             'title' => $title,
             'slug' => Str::slug($title) . '-' . $this->faker->unique()->numberBetween(1, 10000),
             'cover_image' => $this->faker->imageUrl(640, 480),
             'hover_image' => $this->faker->optional()->imageUrl(640, 480),
-            'preview_video' => $this->faker->optional()->url,
             'video_url' => $this->faker->optional()->url,
             'short_description' => $this->faker->paragraph,
             'description' => $this->faker->text,
             'detail' => $this->faker->text,
             'specification' => $this->faker->text,
             'sku' => $this->faker->unique()->ean8,
-            'stock' => $this->faker->optional()->numberBetween(0, 100),
             'bar_code' => $this->faker->unique()->ean13,
             'price' => $this->faker->numberBetween(1000, 50000),
             'discount' => $this->faker->optional()->numberBetween(5, 30),
-            'status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }
 }

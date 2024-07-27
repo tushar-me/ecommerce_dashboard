@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->unique();
+            $table->string('slug');
+            $table->longText('content');
+            $table->string('seo_title')->nullable();
+            $table->string('seo_description')->nullable();
+            $table->string('seo_image')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

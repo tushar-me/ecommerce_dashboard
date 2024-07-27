@@ -1,10 +1,11 @@
 import AppLayout from '@/components/Layouts/AppLayout.vue';
 <script setup>
-    import Editor from '@/components/Editor.vue';
+    import  SummernoteEditor  from 'vue3-summernote-editor';
     import { ref, onMounted } from 'vue'
     import  useAxios  from '@/composables/useAxios';
     import { useAuthStore } from "@/stores/useAuthStore";
     import { useRouter } from 'vue-router';
+    import { toast } from "vue3-toastify";
 
     const { loading, error, sendRequest } = useAxios();
     const authStore = useAuthStore(); 
@@ -40,6 +41,23 @@ import AppLayout from '@/components/Layouts/AppLayout.vue';
     }
 
 
+    //handle cover image
+    const coverImg = ref(null);
+    const coverImage = (image) => {
+        const file = image.target.files[0];
+        form.value.cover_image = file;
+        coverImg.value = URL.createObjectURL(file);
+    }
+
+    // handle hover image
+    const hoverImg = ref(null);
+    const hoverImage = (image) => {
+        const file = image.target.files[0];
+        form.value.hover_image = file;
+        hoverImg.value = URL.createObjectURL(file);
+    }
+    
+
     // handle multiple image upload
     const handleFileChange = (event) => {
         for (let i = 0; i < event.target.files.length; i++) {
@@ -58,8 +76,36 @@ import AppLayout from '@/components/Layouts/AppLayout.vue';
         form.value.images.splice(index, 1);
     };
     const form = ref({
+        title: null,
+        price: null,
+        category_id: null,
+        brand_id: null,
+        status: 1,
+        video_url: null,
+        sku: null,
+        discount_price:null,
+        stock:1,
+        cover_image: null,
+        hover_image: null,
         images: []
-    })
+    });
+
+    // Save Product
+    const onSubmit = async() => {
+        const response = await sendRequest({
+            method: 'post',
+            url: '/v1/product',
+            data: form.value,
+            headers: {
+                authorization: `Bearer ${authStore.user.token}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        if(response?.data){
+            toast.success( `${response?.data?.name} Product Addded Succesfully`, {autoclose:1000});
+            await router.push('/products');
+        }
+    }
 
     onMounted(() => {
         getCategories(); 
@@ -70,29 +116,30 @@ import AppLayout from '@/components/Layouts/AppLayout.vue';
     <AppLayout>
         <div class="p-4 bg-white shadow-md me-4">
             <h1>Add New Poduct</h1>
-            <div class="flex space-x-4">
-                <div class="w-1/2 flex flex-col gap-3">
+            <div class="flex flex-wrap">
+                <div class="w-1/2 flex flex-col gap-3 px-2">
                     <div class="w-full">
                         <label for="title" class="text-sm mb-1">Product Tilte</label>
-                        <textarea type="text" class="p-1 border border-primary w-full rounded"></textarea>
+                        <textarea type="text" class="p-1 border border-primary w-full rounded" v-model="form.title"></textarea>
                     </div>
                     <div class="w-full flex items-center space-x-3">
                         <div class="w-1/4">
                             <label for="price" class="text-sm">Price</label>
-                            <input type="text" class="border border-primary p-2 rounded-md w-full">
+                            <input type="text" class="border border-primary p-2 rounded-md w-full" v-model="form.price">
+                        </div>
+                        <div class="w-1/4">
+                            <label for="discount" class="text-sm">Discount Price</label>
+                            <input type="text" class="border border-primary p-2 rounded-md w-full" v-model="form.discount_price">
                         </div>
                         <div class="w-1/4">
                             <label for="sku" class="text-sm">Sku</label>
-                            <input type="text" class="border border-primary p-2 rounded-md w-full">
+                            <input type="text" class="border border-primary p-2 rounded-md w-full" v-model="form.sku">
                         </div>
                         <div class="w-1/4">
                             <label for="discount" class="text-sm">Stock</label>
-                            <input type="text" class="border border-primary p-2 rounded-md w-full">
+                            <input type="text" class="border border-primary p-2 rounded-md w-full" v-model="form.stock">
                         </div>
-                        <div class="w-1/4">
-                            <label for="discount" class="text-sm">Discount</label>
-                            <input type="text" class="border border-primary p-2 rounded-md w-full">
-                        </div>
+                        
                     </div> 
                     <div class="w-full flex items-center space-x-5">
                         <div class="w-1/2">
@@ -101,38 +148,73 @@ import AppLayout from '@/components/Layouts/AppLayout.vue';
                                 label="name"
                                 v-if="categories"
                                 :options="categories"
-                                searchable
-                            ></Select>
+                                :reduce="item => item.id"
+                                :searchable="true"
+                                v-model="form.category_id"
+                                placeholder="Set Category"
+                            >
+                            <template v-slot:option="option">
+                                <li class="flex items-start py-1">
+                                    <div class="flex items-center justify-between w-full">
+                                        <div class="me-1 flex items-center gap-2">
+                                            <img :src="option?.icon" class="w-12 h-12">
+                                            <h6 class="mb-25">{{ option?.name }}</h6>
+                                        </div>
+                                    </div>
+                                </li>
+                            </template>
+                            </Select>
                         </div>
                         <div class="w-1/2">
                             <label for="brand" class="text-sm">Brand</label>
-                            <Select></Select>
+                            <Select
+                                label="name"
+                                    v-if="brands"
+                                    :options="brands"
+                                    :reduce="item => item.id"
+                                    :searchable="true"
+                                    placeholder="Set Brand"
+                                    v-model="form.brand_id"
+                                >
+                                <template v-slot:option="option">
+                                    <li class="flex items-start py-1">
+                                        <div class="flex items-center justify-between w-full">
+                                            <div class="me-1 flex items-center gap-2">
+                                                <img :src="option?.logo" class="w-12 h-12">
+                                                <h6 class="mb-25">{{ option?.name }}</h6>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </template>
+                            </Select>
                         </div>
                     </div>   
                     <div class="w-full">
                         <label for="title" class="text-sm mb-1">Video Url (Optional)</label>
                         <textarea type="text" class="p-1 border border-primary w-full rounded"></textarea>
                     </div>
-                    <div class="w-full">
-                        <label for="title" class="text-sm mb-1">Short Description</label>
-                        <Editor />
-                    </div>
                 </div>
-                <div class="w-1/2 flex flex-col gap-4">
+                <div class="w-1/2 flex flex-col gap-4 px-2">
                     <div class="flex">
                         <div class="w-1/2 pr-2">
                             <label for="image" class="text-sm block mb-1">Cover Image</label>
                             <label for="cover_image" class="w-full max-w-80 h-72 flex items-center
                             justify-center gap-3 p-2 border border-dashed border-primary rounded-md text-primary cursor-pointer">
-                                <input type="file" id="cover_image" hidden>
-                                <p>Upload Product Cover Image</p>
+                                <input type="file" id="cover_image" hidden @change="coverImage">
+                                <img v-if="coverImg" :src="coverImg" alt="">
+                                <div v-else>
+                                    <p>Upload Product Cover Image</p>
+                                </div>
                             </label>
                         </div>
                         <div class="w-1/2 pl-2">
                             <label for="image" class="text-sm block mb-1">Hover Image(Optional)</label>
-                            <label for="cover_image" class="flex items-center gap-3 p-2 border border-dashed border-primary rounded-md text-primary cursor-pointer justify-center w-full max-w-80 h-72">
-                                <input type="file" id="cover_image" hidden>
-                                <p>Upload Product Hover Image</p>
+                            <label for="hover_image" class="flex items-center gap-3 p-2 border border-dashed border-primary rounded-md text-primary cursor-pointer justify-center w-full max-w-80 h-72">
+                                <input type="file" id="hover_image" hidden @change="hoverImage">
+                                <img v-if="hoverImg" :src="hoverImg" alt="">
+                                <div v-else>
+                                    <p>Upload Product Cover Image</p>
+                                </div>
                             </label>
                         </div>
                     </div>
@@ -166,19 +248,23 @@ import AppLayout from '@/components/Layouts/AppLayout.vue';
                         </div>    
                     </div>
                 </div>
+                <div class="w-full px-2 mb-5">
+                    <label for="title" class="text-sm mb-1">Product Info</label>
+                    <div class="editor_data">
+                        <SummernoteEditor v-model="form.description" />
+                    </div>
+                </div>
+                <div class="w-full px-2">
+                    <label for="title" class="text-sm mb-1">Specifications</label>
+                    <div class="editor_data">
+                        <SummernoteEditor v-model="form.description" />
+                    </div>
+                </div>
             </div>
+
         </div>
-        <div  class="p-4 bg-white shadow-md me-4 mt-5">
-            <div class="w-full">
-                <label for="title" class="text-sm mb-1">Product Description</label>
-                <Editor />
-            </div>
-        </div>
-        <div  class="p-4 bg-white shadow-md me-4 mt-5">
-            <div class="w-full">
-                <label for="title" class="text-sm mb-1">Product Spacification</label>
-                <Editor />
-            </div>
+        <div class="text-center pt-10">
+            <Button class="w-1/2 mx-auto" @click="onSubmit">Save Product</Button>
         </div>
     </AppLayout>
 </template>

@@ -95,9 +95,9 @@ const props = defineProps({
                             </RouterLink>
                         </li>
                         <li>
-                            <RouterLink to="/product/attribute" class="flex items-center gap-3 ">
+                            <RouterLink to="/product/variations" class="flex items-center gap-3 ">
                                 <Icon name="material-symbols-light:circles-outline" class="text-white" />
-                                <span class="text-sm text-white">Attribute</span>
+                                <span class="text-sm text-white">Variations</span>
                             </RouterLink>
                         </li>
                         <li>
@@ -227,6 +227,14 @@ const props = defineProps({
 
             <!-- Setting -->
             <li>
+                <RouterLink to="/setting" class="flex items-center gap-3 ">
+                    <div class=" w-7 h-7 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
+                        <Icon name="material-symbols-light:circles-outline" class="text-white" />
+                    </div>
+                    <span class="text-sm text-white">Setting</span>
+                </RouterLink>
+            </li>
+            <!-- <li>
                 <div class="group flex items-center gap-3  rounded-lg transition-all ease-in-out duration-300 cursor-pointer relative" @click="isSettingLinks = !isSettingLinks">
                     <div class=" w-7 h-7 bg-slate-400/50 border border-gray-100/50 rounded-full flex items-center justify-center">
                         <Icon   name="carbon:ibm-data-product-exchange" size="20" class="text-white" />
@@ -264,7 +272,7 @@ const props = defineProps({
                         </li>
                     </ul>
                 </div>
-            </li>
+            </li> -->
             <!-- Setting End--> 
         </ul>
     </div>

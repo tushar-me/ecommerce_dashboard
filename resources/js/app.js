@@ -9,6 +9,11 @@ import  VSelect  from "vue-select";
 
 import 'vue3-toastify/dist/index.css';
 import 'flowbite';
+import 'summernote/dist/summernote-lite.css';
+import 'summernote/dist/summernote-lite.min.js';
+
+import $ from 'jquery';
+window.$ = window.jQuery = $;
 
 
 import App from './App.vue'
@@ -19,7 +24,6 @@ app.use(createPinia())
     .use(router)
     .component('AppLayout', AppLayout)
     .component('Icon', Icon)
-    .component('Tooltip', Tooltip)
     .component('Button', Button)
     .component("Select", VSelect)
     .mount('#app')

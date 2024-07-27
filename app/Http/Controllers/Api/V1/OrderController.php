@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\User;
 use App\Http\Resources\V1\Order\OrderListResource;
 use App\Http\Resources\V1\Order\OrderShowResource;
 use App\Http\Requests\V1\OrderStoreRequest;
+use App\Models\OrderDetail;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrderController extends Controller
@@ -18,9 +20,24 @@ class OrderController extends Controller
     public function index()
     {
         $orders = Order::query()
-            ->with(['orderDetails', 'orderDetails.product'])
+            ->with(['orderDetails', 'orderDetails.product', 'user'])
             ->paginate(10);
         return OrderListResource::collection($orders);
+    }
+
+    public function customerOrder(Request $request)
+    {
+        $user = User::find($request->user_id);
+        $orders = $user->orders;
+
+        return OrderListResource::collection($orders);
+    }
+
+    public function showCustomerOrder($id)
+    {
+        $order =  Order::where('id', $id)->with('customer', 'orderDetails', 'address')->first();
+
+        return OrderShowResource::make($order);
     }
 
     /**
@@ -28,34 +45,38 @@ class OrderController extends Controller
      */
     public function store(OrderStoreRequest $request)
     {
-        $order = Order::create($request->validated);
-        $details = array_map(function ($item)use($order){
-            $item["order_id"] = $order->id;
-            return $item;
-        }, $request["order_details"]);
-        $order->orderDetails()->createMany($details);
-        return OrderShowResource::make($order->load('orderDetails'));
+        $data = $request->validated();
+        return $data;
+
+        $order = Order::create($data);
+
+
+
+        $orderDetails = [];
+        foreach($data['order_items'] as $detail)
+        {
+            $orderDetails[] = [
+                'order_id' => $order->id,
+                'product_id' => $data['product']['id'],
+                'quantity' => $data['selectSku']['selectQty']
+            ];
+        }
+
+        OrderDetail::insert($orderDetails);
+
+        return OrderShowResource::make($order );
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $order = Order::findOrFail($id);

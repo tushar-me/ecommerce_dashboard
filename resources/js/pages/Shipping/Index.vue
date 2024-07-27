@@ -1,5 +1,60 @@
 <script setup>
 import AppLayout from "@/components/Layouts/AppLayout.vue";
+import { useAuthStore } from '@/stores/useAuthStore.js';
+import useAxios from '@/composables/useAxios';
+import {ref, onMounted} from 'vue'; 
+import { toast } from "vue3-toastify";
+
+const {loading, error, sendRequest} = useAxios();
+const authStore = useAuthStore();
+
+const areas = ref(null);
+const getAreas = async() => {
+    const response = await sendRequest({
+        method:'get',
+        url:'/v1/shipping-area',
+        headers: {
+            authorization: `Bearer ${authStore.user.token}`,
+        }
+    })
+
+    areas.value = response.data
+}
+
+
+const updateStatus = async(id) => {
+    const response = await sendRequest({
+        method:'post',
+        url:`/v1/update-area-status/${id}`,
+        headers: {
+            authorization: `Bearer ${authStore.user.token}`
+        }
+    })
+
+    if(response)
+    {
+        toast.success('Status Updated Successfully');
+    }
+}
+
+const onDelete = async(id) => {
+    const response = await sendRequest({
+        method:'delete',
+        url:`/v1/shipping-area/${id}`,
+        headers: {
+            authorization: `Bearer ${authStore.user.token}`,
+        }
+    })
+
+    if(response){
+        toast.success('Shipping Area Deleted Successfully');
+        getAreas();
+    }
+}
+
+onMounted(() => {
+    getAreas();
+})
 </script>
 <template>
     <AppLayout>
@@ -11,10 +66,10 @@ import AppLayout from "@/components/Layouts/AppLayout.vue";
                         <h3 class="text-primary text-3xl font-semibold">Shipping</h3>
                     </div>
                     <div>
-                        <Button class="flex items-center gap-2">
+                        <RouterLink to="/create-shipping" class="flex items-center gap-2 bg-primary text-white px-4 py-2 text-base">
                             <Icon name="material-symbols:add-box-outline" />
-                            Add Record
-                        </Button>
+                            Add New Shipping
+                        </RouterLink>
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
@@ -26,7 +81,7 @@ import AppLayout from "@/components/Layouts/AppLayout.vue";
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                 </svg>
                             </div>
-                            <input type="text" id="table-search-users" class="block p-2 ps-10 text-sm text-gray-900 border border-primary rounded-lg w-96 bg-gray-50 focus:ring-primary focus:border-primary" placeholder="Search for Customers">
+                            <input type="text" id="table-search-users" class="block p-2 ps-10 text-sm text-gray-900 border border-primary rounded-lg w-96 bg-gray-50 focus:ring-primary focus:border-primary" placeholder="Search for Shipping Area">
                         </div>
                     </div>
 
@@ -46,9 +101,6 @@ import AppLayout from "@/components/Layouts/AppLayout.vue";
                     <thead class="text-xs text-white  uppercase bg-primary dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                           Id
-                        </th>
-                        <th scope="col" class="px-6 py-3">
                             Area Name
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -64,41 +116,46 @@ import AppLayout from "@/components/Layouts/AppLayout.vue";
                             Condition Price
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Status
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Action
                         </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="order in 8" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th class="flex items-center px-6 py-4">
-                           <p># 1</p>
-                        </th>
-
+                    <tr v-for="area in areas" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td class="px-6 py-4">
-                            <p>Dhaka</p>
+                            {{ area?.name }}
                         </td>
                         <th class="px-6 py-4">
-                           <p>1213</p>
+                            {{ area?.area_code }}
                         </th>
                         <th class="px-6 py-4">
-                           <p>50</p>
+                            {{area?.delevery_charge}}
                         </th>
                         <th class="px-6 py-4">
-                           <p>......</p>
+                            {{ area?.condition_charge}}
                         </th>
                         <th class="px-6 py-4">
-                           <p>.....</p>
+                            {{ area?.condition_price}}
                         </th>
-
+                        <th class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <div class="checkbox">
+                                    <input  type="checkbox"  :id="`status-${area?.id}`" class="hidden" :checked="area?.status === 1" @click="updateStatus(area.id)"> 
+                                    <label :for="`status-${area?.id}`">
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </th>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-2">
-                                <button class="w-8 h-8 rounded-md flex items-center justify-center bg-green-400/10 border border-green-900">
-                                    <Icon  name="material-symbols:visibility-outline-rounded" class="text-xl text-green-900" />
-                                </button>
-                                <button class="w-8 h-8 rounded-md flex items-center justify-center bg-yellow-400/10 border border-yellow-900">
+                                <RouterLink :to="`/edit-shipping/${area.id}`" class="w-8 h-8 rounded-md flex items-center justify-center bg-yellow-400/10 border border-yellow-900">
                                     <Icon name="material-symbols:edit-square-outline" class="text-lg text-yellow-900" />
-                                </button>
-                                <button class="w-8 h-8 rounded-md flex items-center justify-center bg-red-400/10 border border-red-900">
+                                </RouterLink>
+                                <button @click="onDelete(area?.id)" class="w-8 h-8 rounded-md flex items-center justify-center bg-red-400/10 border border-red-900">
                                     <Icon name="material-symbols:delete-outline" class="text-lg text-red-900" />
                                 </button>
                             </div>

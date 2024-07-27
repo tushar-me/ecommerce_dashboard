@@ -22,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
     ];
 
@@ -53,12 +54,13 @@ class User extends Authenticatable
         return $this->hasMany(Product::class);
     }
 
-    public function isAdmin()
+    public function addresses()
     {
-        return $this->role === 'admin';
+        return $this->hasMany(CustomerAddress::class);
     }
-    public function isManager()
+
+    public function orders()
     {
-        return $this->role === 'manager';
+        return $this->hasMany(Order::class);
     }
 }

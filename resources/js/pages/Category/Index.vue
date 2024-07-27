@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue';
 import useAxios from "@/composables/useAxios"
 import { useAuthStore } from '@/stores/useAuthStore.js';
 import { toast } from 'vue3-toastify';
+
 const authStore = useAuthStore();
 const { loading, error, sendRequest } = useAxios();
 
@@ -29,8 +30,10 @@ const deleteCategory = async(category)  => {
             authorization: `Bearer ${authStore.user.token}`,
         }
     });
-    getCategories();
-    toast.success('Category Deleted Succesfully', {autoClose:1000})
+    if(response){
+        getCategories();
+        toast.success('Category Deleted Succesfully', {autoClose:1000})
+    }
 }
 
 onMounted(() => {
@@ -62,7 +65,7 @@ onMounted(() => {
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                 </svg>
                             </div>
-                            <input type="text" id="table-search-users" class="block p-2 ps-10 text-sm text-gray-900 border border-primary rounded-lg w-96 bg-gray-50 focus:ring-primary focus:border-primary" placeholder="Search for Customers">
+                            <input type="text" id="table-search-users" class="block p-2 ps-10 text-sm text-gray-900 border border-primary rounded-lg w-96 bg-gray-50 focus:ring-primary focus:border-primary" placeholder="Search for Categories">
                         </div>
                     </div>
 
@@ -88,7 +91,7 @@ onMounted(() => {
                             </div>
                         </th>
                         <th scope="col" class="px-6 py-3">
-                           Icon
+                            Icon
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Banner
@@ -103,8 +106,9 @@ onMounted(() => {
                             Order Number
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Created By
+                            Parent Category
                         </th>
+                        
                         <th scope="col" class="px-6 py-3">
                             Action
                         </th>
@@ -119,37 +123,42 @@ onMounted(() => {
                             </div>
                         </td>
                         <th class="flex items-center px-6 py-4">
-                            <img class="w-16 h-auto" :src="category?.icon" :alt="category?.name">
+                            <img class="w-10 h-auto" :src="category?.icon" :alt="category?.name">
                         </th>
 
                         <td class="px-6 py-4">
-                            <img :src="category?.banner" class="w-16 md:w-40 h-16 max-w-full max-h-full" :alt="category?.name">
+                            <img :src="category?.banner" class="w-16 md:w-32 h-auto lg:h-12 max-w-full max-h-full" :alt="category?.name">
                         </td>
-                        <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                        <th class=" px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                             <div>
-                                <div class="text-base font-semibold">{{ category?.name }}</div>
+                                <div class="text-base font-medium">{{ category?.name }}</div>
                             </div>
                         </th>
                         <td class="px-6 py-4">
-                            <div class="flex items-center">
-                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> Online
+                            <div class="flex items-center gap-2">
+                                <div class="checkbox">
+                                    <input type="checkbox"   :id="`status-${category?.id}`" class="hidden" :checked="category?.status ===1"> 
+                                    <label :for="`status-${category?.id}`">
+                                        <span></span>
+                                    </label>
+                                </div>
                             </div>
                         </td>
                         <td class="px-6 py-4 text-center">
-                            {{ 1 }}
+                            {{ category?.order_number }}
                         </td>
-                        <td class="px-6 py-4">
-                            Bonnie Green
+                        <td class="px-6 py-4 text-center">
+                            <span v-if="category?.parent_id === 0" class="bg-green-200 rounded-full text-green-950 px-3 py-1 text-xs">Main</span>
+                            <span v-else class="bg-yellow-200 rounded-full text-yellow-600 px-3 py-1 text-xs">{{ category?.parent?.name }}</span>
                         </td>
-
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-2">
-                                <button class="w-8 h-8 rounded-md flex items-center justify-center bg-green-400/10 border border-green-900">
+                                <RouterLink :to="`/category/${category?.id}`"  class="w-8 h-8 rounded-md flex items-center justify-center bg-green-400/10 border border-green-900">
                                     <Icon  name="material-symbols:visibility-outline-rounded" class="text-xl text-green-900" />
-                                </button>
-                                <button class="w-8 h-8 rounded-md flex items-center justify-center bg-yellow-400/10 border border-yellow-900">
+                                </RouterLink>
+                                <RouterLink :to="`/edit-category/${category?.id}`" class="w-8 h-8 rounded-md flex items-center justify-center bg-yellow-400/10 border border-yellow-900">
                                     <Icon name="material-symbols:edit-square-outline" class="text-lg text-yellow-900" />
-                                </button>
+                                </RouterLink>
                                 <button @click="deleteCategory(category?.id)" class="w-8 h-8 rounded-md flex items-center justify-center bg-red-400/10 border border-red-900">
                                     <Icon name="material-symbols:delete-outline" class="text-lg text-red-900" />
                                 </button>

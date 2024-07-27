@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_attributes', function (Blueprint $table) {
+        Schema::create('districts', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique()->index();
-            $table->string('slug')->unique()->index();
+            $table->foreignId('division_id')->constrained('divisions')->cascadeOnDelete();
+            $table->string('name');
+            $table->string('bn_name');
+            $table->string('lat');
+            $table->string('lon');
+            $table->string('url');
             $table->timestamps();
         });
     }
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_attributes');
+        Schema::dropIfExists('districts');
     }
 };

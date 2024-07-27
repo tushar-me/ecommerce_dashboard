@@ -2,24 +2,40 @@
     import { onMounted, ref } from 'vue';
     import useAxios from "@/composables/useAxios"
     import { useAuthStore } from '@/stores/useAuthStore.js';
+import { toast } from 'vue3-toastify';
     const authStore = useAuthStore();
     const { loading, error, sendRequest } = useAxios();
 
-    const blogs= ref(null);
+    const pages= ref(null);
 
-    const getBlog = () => {
-        const res = sendRequest({
+    const getPages = async() => {
+        const response = await sendRequest({
             method: 'get',
-            url: '/blog',
+            url: '/v1/page',
             headers: {
                 authorization: `Bearer ${authStore.user.token}`
             }
         });
-        blogs.value = res.data
+        pages.value = response.data
+    }
+
+    const onDelete = async(id) => {
+        const response = await sendRequest({
+            method:'delete',
+            url:`/v1/page/${id}`,
+            headers: {
+                authorization: `Bearer ${authStore.user.token}`
+            }
+        })
+
+        if(response){
+            getPages();
+            toast.success('Page Deleted Succesfully');
+        }
     }
 
     onMounted(() => {
-        getBlog();
+        getPages();
     })
 </script>
 <template>
@@ -32,10 +48,10 @@
                         <h3 class="text-primary text-lg font-semibold">Pages</h3>
                     </div>
                     <div>
-                        <Button class="flex items-center gap-2">
+                        <RouterLink to="/create-page" class="flex items-center gap-2 text-white px-4 py-2 bg-primary text-sm">
                             <Icon name="material-symbols:add-box-outline" />
                             Add Record
-                        </Button>
+                        </RouterLink>
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
@@ -81,28 +97,25 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="order in 8" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <tr v-for="page in pages?.data" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
             <td class="px-6 py-4">
-                About Us
+                {{ page?.title }}
             </td>
             <td class="px-6 py-4">
-                about-us
+                {{ page?.slug }}
             </td>
             <td class="px-6 py-4">
-                2-9-18
+                {{ page?.created_at }}
             </td>
             <td class="px-6 py-4">
-               <div class="flex items-center gap-2">
-                <button class="w-8 h-8 rounded-md flex items-center justify-center bg-green-400/10 border border-green-900">
-                    <Icon  name="material-symbols:visibility-outline-rounded" class="text-xl text-green-900" />
-                </button>
-                <button class="w-8 h-8 rounded-md flex items-center justify-center bg-yellow-400/10 border border-yellow-900">
-                    <Icon name="material-symbols:edit-square-outline" class="text-lg text-yellow-900" />
-                </button>
-                <button class="w-8 h-8 rounded-md flex items-center justify-center bg-red-400/10 border border-red-900">
-                    <Icon name="material-symbols:delete-outline" class="text-lg text-red-900" />
-                </button>
-               </div>
+                <div class="flex items-center gap-2">
+                    <RouterLink :to="`/edit-page/${page?.id}`" class="w-8 h-8 rounded-md flex items-center justify-center bg-yellow-400/10 border border-yellow-900">
+                        <Icon name="material-symbols:edit-square-outline" class="text-lg text-yellow-900" />
+                    </RouterLink>
+                    <button @click="onDelete(page?.id)" class="w-8 h-8 rounded-md flex items-center justify-center bg-red-400/10 border border-red-900">
+                        <Icon name="material-symbols:delete-outline" class="text-lg text-red-900" />
+                    </button>
+                </div>
             </td>
             </tr>
             </tbody>

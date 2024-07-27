@@ -1,5 +1,28 @@
 <script setup>
 import AppLayout from "@/components/Layouts/AppLayout.vue";
+import {ref, onMounted } from 'vue';
+import { useAuthStore } from '@/stores/useAuthStore.js';
+import useAxios from '@/composables/useAxios';
+
+const {loading, error, sendRequest} = useAxios();
+const authStore = useAuthStore();
+
+const orders = ref(null);
+const getOrder = async() => {
+    const response = await sendRequest({
+        method:'get',
+        url:'/v1/order',
+        headers: {
+            authorization: `Bearer ${authStore.user.token}`,
+        }
+    })
+
+    orders.value = response.data;
+}
+
+onMounted(() => {
+    getOrder();
+})
 </script>
 <template>
     <AppLayout>
@@ -69,38 +92,41 @@ import AppLayout from "@/components/Layouts/AppLayout.vue";
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="order in 8" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <tr v-for="order in orders?.data" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th class="flex items-center p-3">
-                            <span># 1</span>
+                            <span>order_id_#{{order?.id}}</span>
                         </th>
                         <th scope="row" class="p-3 text-gray-900 whitespace-nowrap dark:text-white">
-                            <div>
-                                <div class="text-base font-semibold">Neil Sims</div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-10 h-10 flex items-center justify-center bg-blue-500 rounded-full text-white text-lg">
+                                    {{order?.user?.name.substring(0, 1)}}
+                                </div>   
+                                <div class="text-base font-semibold">{{ order?.user?.name }}</div>
                             </div>
                         </th>
                         <td class="p-3">
                             <div class="flex items-center">
-                               <p>$ 650</p>
+                               <p>{{ order?.grand_total }}</p>
                             </div>
                         </td>
                         <td class="p-3">
                             <div class="flex justify-center">
-                                <p class="rounded border border-yellow-600 bg-yellow-100 text-yellow-600 text-xs font-medium px-3 py-1 text-center">Pending</p>
+                                <p class="rounded  text-yellow-500 text-xs font-medium px-3 py-1 text-center">{{ order?.order_status }}</p>
                             </div>
                         </td>
                         <td class="p-3">
                             <div class="flex items-center">
-                                <p>Customer</p>
+                                <p>{{ order?.order_type }}</p>
                             </div>
                         </td>
                         <td class="p-3">
                             <div class="flex justify-center">
-                                <p class="rounded border border-green-700 bg-green-200 text-green-700 text-xs font-semibold px-3 py-1 text-center">Paid</p>
+                                <p class="rounded  text-green-400 text-xs font-semibold px-3 py-1 text-center">{{ order?.payment_status }}</p>
                             </div>
                         </td>
                         <td class="p-3">
                             <div class="flex items-center">
-                                <p>Bkash</p>
+                                <p>{{order?.payment_method}}</p>
                             </div>
                         </td>
                         <td class="p-3">

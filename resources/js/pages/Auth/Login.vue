@@ -14,7 +14,7 @@
     //Login
     const loginCredential = ref({
     email: 'tushar@admin.com',
-    password: '12345678',
+    password: 'tushar',
     });
 
     const handleLogin = async () => {

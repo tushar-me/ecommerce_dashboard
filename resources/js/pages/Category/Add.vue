@@ -1,5 +1,5 @@
 <script setup>
-import Editor from "@/components/Editor.vue";
+import  SummernoteEditor  from 'vue3-summernote-editor';
 import useAxios from "@/composables/useAxios"
 import { useAuthStore } from "@/stores/useAuthStore";
 import { toast } from "vue3-toastify";
@@ -16,7 +16,9 @@ const getParentCategory = async() => {
         url: '/v1/parent-category',
         headers: {
             authorization: `Bearer ${authStore.user.token}`,
-        }
+            
+        },
+         
     });
     parentCategories.value = response?.data;
 }
@@ -26,11 +28,12 @@ const bannerImg = ref(null);
 
 const form = ref({
     name: null,
-    parent_id: 0,
+    parent_id: null,
     icon: null,
     banner: null,
-    status:'active',
+    status:true,
     order_number: null,
+    short_description: null,
     description: null,
 });
 
@@ -47,6 +50,7 @@ const image = (image) => {
 }
 
 const onSubmit = async() => {
+    console.log(form.value);
     const response = await sendRequest({
         method: 'post',
         url: '/v1/category',
@@ -56,14 +60,11 @@ const onSubmit = async() => {
             'Content-Type': 'multipart/form-data'
         }
     });
-
-    console.log(response?.data);
     if(response?.data){
         toast.success( `${response?.data?.name} Category Addded Succesfully`, {autoclose:1000});
         await router.push('/category');
     }
 }
-
 
 
 onMounted(() => {
@@ -90,6 +91,8 @@ onMounted(() => {
                             v-if="parentCategories"
                             label="name"
                             :options="parentCategories"
+                            :reduce="item => item.id"
+                            v-model="form.parent_id"
                             >
                                 
                             </Select>
@@ -106,14 +109,12 @@ onMounted(() => {
                         <div class="w-full">
                             <label for="name" class="text-sm block mb-2">Category Status</label>
                             <div class="flex items-center gap-2">
-                                <span class="text-sm">Inactive</span>
                                 <div class="checkbox">
-                                    <input type="checkbox"  id="status" class="hidden"> 
+                                    <input type="checkbox"  id="status" class="hidden" v-model="form.status"> 
                                     <label for="status">
                                         <span></span>
                                     </label>
                                 </div>
-                                <span class="text-sm">Active</span>
                             </div>
                         </div>
                     </div>
@@ -147,10 +148,16 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-                <div class="w-full">
-                    <Editor  />
+                <div class="w-full mb-4">
+                    <label for="short-description" class="text-sm block mb-2">Short Description</label>
+                    <textarea class="w-full h-20 rounded border p-2" v-model="form.short_description"></textarea>
                 </div>
-                <div v-html="form.description"></div>
+                <div class="w-full">
+                    <label for="description" class="text-sm block mb-2">Description</label>
+                    <div class="editor_data">
+                        <SummernoteEditor v-model="form.description" />
+                    </div>
+                </div>
             </div>
             <div class="mt-5">
                 <Button @click="onSubmit">Save Category</Button>

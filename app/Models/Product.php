@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-
+use Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Product extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
 
     public function creator() :BelongsTo 
     {
@@ -34,5 +36,26 @@ class Product extends Model
     public function images() :HasMany
     {
         return $this->hasMany(ProductImage::class);
+    }
+
+
+    public function prices()
+    {
+        return $this->hasMany(ProductStock::class);
+    }
+    public function productVariationOptions()
+    {
+        return $this->belongsToMany(Product::class, 'variation_option_id')
+            ->withPivot(['variant_id','variation_option_id', 'price', 'stock', 'sku']);
+    }
+
+    public function stocks()
+    {
+        return $this->hasMany(ProductStock::class);
+    }
+
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetail::class);
     }
 }

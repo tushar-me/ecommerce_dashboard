@@ -9,9 +9,7 @@ use App\Http\Resources\V1\Category\CategoryListResource;
 use App\Http\Resources\V1\Category\CategoryParentResource;
 use App\Http\Resources\V1\Category\CategoryShowResource;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\UnauthorizedException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Str;
 use function App\Http\Helpers\uploadFile;
@@ -23,8 +21,9 @@ class CategoryController extends Controller
     public function index(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $categories = Category::query()
+        ->with('parent')
         ->whereLike(['name'], $request->input('search'))
-        ->sortBy()
+        ->orderBy('order_number')
         ->pagination(); 
 
         return CategoryListResource::collection($categories);
@@ -52,6 +51,12 @@ class CategoryController extends Controller
     {
         $data = $request->validated();
         $data['slug'] = str::slug($data['name']);
+        if($data['status'] === 'true' || $data['status'] === '1')
+        {
+            $data['status'] = 1;
+        }else {
+            $data['status'] = 0;
+        }
 
         if($request->hasFile('icon')){
             $path ='/storage/'.$request->file('icon')->store('uploads','public');
@@ -77,6 +82,12 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         $data = $request->validated();
+        $data['slug'] = str::slug($data['name']);
+        if($data['status'] === 'true' || $data['status'] === '1'){
+            $data['status'] = 1;
+        }else {
+            $data['status'] = 0;
+        }
         // save icon image
         if($request->hasFile('icon')){
             if ($category->icon) {
@@ -94,7 +105,7 @@ class CategoryController extends Controller
             $path = '/storage/' . $request->file('banner')->store('uploads', 'public');
             $data['banner'] = $path;
         }
-        $category = $category->upddate($data);
+        $category->update($data);
 
         return CategoryShowResource::make($category);
     }

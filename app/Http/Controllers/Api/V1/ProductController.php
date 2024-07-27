@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\ProductRequest;
 use App\Http\Resources\V1\Product\ProductShowResource;
 use App\Http\Resources\V1\Product\ProductListResource;
+use App\Models\ProductStock;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
-use App\Models\ProductExtraDetail;
 use App\Models\ProductImage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -23,7 +23,7 @@ class ProductController extends Controller
     public function index(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $products = Product::query()
-        ->with('category', 'images', 'brand')
+        ->with('category', 'images', 'brand', 'stocks')
         ->whereLike(['title'], $request->input('search'))
         ->sortBy()
         ->pagination();
@@ -46,7 +46,6 @@ class ProductController extends Controller
             $data['hover_image'] = $path;
         }
 
-        $data['user_id'] = Auth::id();
         $data['slug'] = Str::slug($data['title']);
         
         $product = Product::create($data);
@@ -68,12 +67,20 @@ class ProductController extends Controller
             }
         }
 
+        ProductStock::create([
+            'product_id' => $product->id,
+            'stock' => $data['stock']
+        ]);
+
         return ProductShowResource::make($product);
     }
 
-    public function show(string $id): ProductShowResource
+    public function show(string $slug) : ProductShowResource
     {
-        $product = Product::findOrFail($id);
+        $product = Product::where('slug', $slug)
+        ->select('id', 'slug', 'title')
+        ->with('stocks', 'stocks.product')
+        ->first();
         return ProductShowResource::make($product);
     }
 
@@ -95,20 +102,16 @@ class ProductController extends Controller
     }
     public function destroy(string $id)
     {
-        if(Auth::check() && Auth::user()->role === 'admin')
-        {
-            $product = Product::findOrFail($id);
-            if ($product) {
-                $images = $product->images;
-                foreach ($images as $image) {
-                    $imagePath = str_replace('/storage', 'public', $image->url);
-                    Storage::delete($imagePath);
-                    $image->delete();
-                }
-                $product->delete();
-                return Response::HTTP_OK;
+        $product = Product::findOrFail($id);
+        if ($product) {
+            $images = $product->images;
+            foreach ($images as $image) {
+                $imagePath = str_replace('/storage', 'public', $image->url);
+                Storage::delete($imagePath);
+                $image->delete();
             }
+            $product->delete();
+            return Response::HTTP_OK;
         }
-        throw new UnauthorizedException(__("unauthenticated_access"));
     }
 }

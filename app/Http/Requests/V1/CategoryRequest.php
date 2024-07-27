@@ -27,8 +27,10 @@ class CategoryRequest extends FormRequest
             'parent_id' => 'nullable|integer',
             'icon' => 'nullable||mimes:png,jpg,jpeg,webp',
             'banner' => 'nullable|mimes:png,jpg,jpeg,webp',
+            'short_description' => 'nullable|string',
             'description' => 'nullable|string',
-            'status' => 'nullable|in:active,inactive',
+            'status' => 'required',
+            'order_number' => 'required|integer'
         ];
     }
     protected  $stopOnFirstFailure = true;

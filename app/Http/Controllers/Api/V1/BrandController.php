@@ -8,21 +8,20 @@ use App\Models\Brand;
 use Illuminate\Http\Request;
 use App\Http\Resources\V1\Brand\BrandListResource;
 use App\Http\Resources\V1\Brand\BrandShowResource;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\UnauthorizedException;
 use Symfony\Component\HttpFoundation\Response;
+use illuminate\Support\Str;
 
 class BrandController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $brands = Brand::query()
-        ->whereLike(['name'], request()->input('search'))
-        ->sortBy()
+        ->whereLike(['name'], $request->input('search'))
+        ->orderBy('order_number')
         ->pagination(); 
         
         return BrandListResource::collection($brands);
@@ -41,6 +40,7 @@ class BrandController extends Controller
     public function store(BrandRequest $request)
     {
         $data = $request->validated();
+        $data['slug'] = Str::slug($data['name']);
         // save icon image
         if($request->hasFile('logo')){
             $path = '/storage/' . $request->file('logo')->store('uploads', 'public');
@@ -52,6 +52,7 @@ class BrandController extends Controller
             $path = '/storage/' . $request->file('banner')->store('uploads', 'public');
             $data['banner'] = $path;
         }
+
         $brand = Brand::create($data);
 
         return BrandShowResource::make($brand);

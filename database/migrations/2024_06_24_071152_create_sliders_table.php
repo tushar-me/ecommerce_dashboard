@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('image');
             $table->text('url');
             $table->integer('order_number')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

@@ -25,7 +25,6 @@ class BrandFactory extends Factory
             'logo' => $this->faker->imageUrl(64, 64), 
             'banner' => $this->faker->imageUrl(800, 200), 
             'description' => $this->faker->paragraph,
-            'status' => $this->faker->randomElement(['active', 'inactive']),
         ];
     }
 }

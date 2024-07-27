@@ -2,22 +2,55 @@
 import { onMounted, ref } from 'vue';
 import useAxios from "@/composables/useAxios"
 import { useAuthStore } from '@/stores/useAuthStore.js';
+import { toast } from 'vue3-toastify';
 const authStore = useAuthStore();
 const { loading, error, sendRequest } = useAxios();
 
 const sliders= ref(null);
 
-const getSliders = () => {
-    const res = sendRequest({
+const getSliders = async() => {
+    const response = await sendRequest({
         method: 'get',
-        url: '/slider',
+        url: '/v1/slider',
         headers: {
             authorization: `Bearer ${authStore.user.token}`
         }
     });
-    sliders.value = res.data
+    sliders.value = response.data
 }
 
+
+const updateStatus = async(id) => {
+    const response = await sendRequest({
+        method:'post',
+        url:`/v1/update-slider-status/${id}`,
+        headers: {
+            authorization: `Bearer ${authStore.user.token}`
+        }
+    })
+
+    if(response)
+    {
+        toast.success('Status Updated Successfully');
+    }
+}
+
+const onDelete = async(id) => {
+    const response = await sendRequest({
+        method:'delete',
+        url:`/v1/slider/${id}`,
+        headers: {
+            authorization: `Bearer ${authStore.user.token}`
+        }
+    })
+
+
+    if(response)
+    {
+        toast.success('Slider Deleted Successfully', {autoClose:1000});
+        getSliders();
+    }
+}
 onMounted(() => {
     getSliders();
 })
@@ -32,10 +65,10 @@ onMounted(() => {
                         <h3 class="text-primary text-3xl font-semibold">Slider</h3>
                     </div>
                     <div>
-                        <Button class="flex items-center gap-2">
+                        <RouterLink to="/create-slider" class="flex items-center gap-2 bg-primary px-4 py-2 text-white">
                             <Icon name="material-symbols:add-box-outline" />
                             Add Record
-                        </Button>
+                        </RouterLink>
                     </div>
                 </div>
                 <div class="flex items-center justify-between">
@@ -73,26 +106,46 @@ onMounted(() => {
                            URL
                         </th>
                         <th scope="col" class="px-6 py-3">
+                           Status
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                           Order Number
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Action
                         </th>
                     </tr>
                     </thead>
+                    
                     <tbody>
-                    <tr v-for="order in 8" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <tr v-for="slider in sliders?.data" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td class="px-6 py-4">
-                            <img src="https://img.freepik.com/free-photo/woman-holding-various-shopping-bags-copy-space_23-2148674122.jpg?t=st=1719121783~exp=1719125383~hmac=a5500068561c90b563d99ed09fc0f960ed275f058c44b51067057a7bf59bdf66&w=826" class="w-16 md:w-32 max-w-full max-h-full" alt="">
+                            <img :src="slider?.image" class="w-16 md:w-32 max-w-full max-h-full" alt="">
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center">
-                                <a href="http://127.0.0.1:8000/slider">http://127.0.0.1:8000/slider</a>
+                                <a :href="slider?.url">{{ slider?.url }}</a>
                             </div>
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-2">
-                                <button class="w-8 h-8 rounded-md flex items-center justify-center bg-green-400/10 border border-green-900">
+                                <div class="checkbox">
+                                    <input  type="checkbox"  :id="`status-${slider?.id}`" class="hidden" :checked="slider?.status === 1" @click="updateStatus(slider.id)"> 
+                                    <label :for="`status-${slider?.id}`">
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ slider?.order_number }}
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-2">
+                                <RouterLink :to="`/edit-slider/${slider?.id}`" class="w-8 h-8 rounded-md flex items-center justify-center bg-green-400/10 border border-green-900">
                                     <Icon name="material-symbols:edit-square-outline" class="text-lg text-green-900" />
-                                </button>
-                                <button class="w-8 h-8 rounded-md flex items-center justify-center bg-red-400/10 border border-red-900">
+                                </RouterLink>
+                                <button @click="onDelete(slider?.id)" class="w-8 h-8 rounded-md flex items-center justify-center bg-red-400/10 border border-red-900">
                                     <Icon name="material-symbols:delete-outline" class="text-lg text-red-900" />
                                 </button>
                             </div>

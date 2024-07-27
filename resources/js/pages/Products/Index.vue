@@ -3,8 +3,41 @@ import DateRangPicker from '@/components/DateRangPicker.vue';
 import { onMounted, ref } from 'vue';
 import useAxios from "@/composables/useAxios"
 import { useAuthStore } from '@/stores/useAuthStore.js';
+import { toast } from "vue3-toastify";
+import { FwbDropdown } from 'flowbite-vue';
 const authStore = useAuthStore();
 const { loading, error, sendRequest } = useAxios();
+
+
+
+
+    //  get All brands and categories first
+    const categories = ref(null);
+    const brands = ref(null);
+
+    // categores
+    const getCategories = async() => {
+        const response = await sendRequest({
+            method:'get',
+            url:'/v1/get-all-category-list',
+            headers: {
+                authorization: `Bearer ${authStore.user.token}`,
+            }
+        }); 
+        categories.value = response?.data
+    }
+
+    // brands
+    const getBrands = async() => {
+        const response = await sendRequest({
+            method:'get',
+            url:'/v1/get-all-brand-list',
+            headers: {
+                authorization: `Bearer ${authStore.user.token}`,
+            }
+        }); 
+        brands.value = response?.data
+    }
 
 const products = ref(null);
 
@@ -19,7 +52,23 @@ const getProducts = async() => {
     products.value = res?.data?.data
 }
 
+
+
+const deleteProduct = async(product) => {
+    await sendRequest({
+        method:'delete',
+        url: `/v1/product/${product}`,
+        headers: {
+            authorization: `Bearer ${authStore.user.token}`,
+        }
+    });
+    getProducts();
+    toast.success('Product Deleted Succesfully', {autoClose:1000})
+}
+
 onMounted(() => {
+    getCategories(); 
+    getBrands(); 
     getProducts();
 })
 </script>
@@ -54,15 +103,18 @@ onMounted(() => {
 
                     <div class="flex items-center gap-3">
                         <Select
-                        class="w-96"
+                        label="name"
+                        v-if="categories"
+                        class="w-52"
                         placeholder="select category"
-                        :options="['Canada', 'United States']"
-                        multiple
+                        :options="categories"
                         ></Select>
                         <Select
+                        label="name"
+                        v-if="brands"
                         class="w-52"
                         placeholder="select Brand"
-                        :options="['Canada', 'United States']"
+                        :options="brands"
                         ></Select>
                     </div>
 
@@ -70,6 +122,7 @@ onMounted(() => {
                 <div class="flex items-center gap-3">
                     <div>
                         <Select
+                        
                         class="w-36"
                         placeholder="price"
                         :options="['1 - 100$', '100 - 500$', '500$ - 1000$', '1000$+']"
@@ -172,13 +225,16 @@ onMounted(() => {
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-2">
-                                            <button class="w-8 h-8 rounded-md flex items-center justify-center bg-green-400/10 border border-green-900">
+                                            <RouterLink :to="`/product-detail/${product?.slug}`" class="w-8 h-8 rounded-md flex items-center justify-center bg-green-400/10 border border-green-900">
                                                 <Icon  name="material-symbols:visibility-outline-rounded" class="text-xl text-green-900" />
-                                            </button>
-                                            <button class="w-8 h-8 rounded-md flex items-center justify-center bg-yellow-400/10 border border-yellow-900">
+                                            </RouterLink>
+                                            <RouterLink :to="`/edit-product-variation/${product?.slug}`" class="w-8 h-8 rounded-md flex items-center justify-center bg-sky-400/10 border border-sky-900">
+                                                <Icon name="material-symbols-light:rule-settings-rounded" class="text-lg text-sky-900" />
+                                            </RouterLink>
+                                            <RouterLink :to="`/edit-product/${product?.slug}`" class="w-8 h-8 rounded-md flex items-center justify-center bg-yellow-400/10 border border-yellow-900">
                                                 <Icon name="material-symbols:edit-square-outline" class="text-lg text-yellow-900" />
-                                            </button>
-                                            <button class="w-8 h-8 rounded-md flex items-center justify-center bg-red-400/10 border border-red-900">
+                                            </RouterLink>
+                                            <button @click = "deleteProduct(product?.id)" class="w-8 h-8 rounded-md flex items-center justify-center bg-red-400/10 border border-red-900">
                                                 <Icon name="material-symbols:delete-outline" class="text-lg text-red-900" />
                                             </button>
                                         </div>

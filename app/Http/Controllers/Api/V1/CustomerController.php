@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\CustomerRequest;
 use App\Http\Resources\V1\Customer\CustomerListResource;
 use App\Http\Resources\V1\Customer\CustomerShowResource;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -17,6 +18,7 @@ class CustomerController extends Controller
     public function index()
     {
         $users = User::query()
+        ->with('addresses')
         ->whereLike(['name', 'phone', 'email'], request()->input('search'))
         ->sortBy()
         ->pagination(); 
@@ -56,6 +58,15 @@ class CustomerController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $customer = User::find($id);
+        if($customer){
+            $addresses = $customer->addrresses;
+            if($addresses) {
+                $addresses->delete();
+            }
+            $customer->delete();
+
+            return Response::HTTP_OK;
+        }
     }
 }
